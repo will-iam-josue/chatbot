@@ -56,7 +56,7 @@ def webhook():
 
 def verify_token(req):
     token = req.args.get('hub.verify_token')
-    challenge = raq.args.get('hub.challenge')
+    challenge = req.args.get('hub.challenge')
 
     if token and challenge == TOKEN:
         return challenge
@@ -65,8 +65,8 @@ def verify_token(req):
 
 def recibir_mensaje(req):
     r = add_log_message(req)
-    add_log_message(r )
+    add_log_message(r)
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=8001, debug=True)
