@@ -65,6 +65,7 @@ def verify_token(req):
         print('EL TOKEN ES CORRECTO')
         return challenge
     else:
+        print('TOKEN INVALIDO!!!....')
         return  jsonify({'error': 'Token Invalido'}), 401
 
 def recibir_mensaje(req):
@@ -94,7 +95,7 @@ def recibir_mensaje(req):
                 if 'text' in message:
                     print('MENSAJE DE TIPO TEXTO!!!...')
                     numero = '527772005020'
-                    #numero = f'{numero[1:3]}{numero[3:]}'
+                    #numero = f'{numero[1:3]}{numero[4:]}'
                     texto = messages['text']['body']
                     
                     enviar_mensaje(texto, numero)
@@ -147,4 +148,4 @@ def enviar_mensaje(texto, numero):
         connection.close()
         
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8001, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
