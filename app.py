@@ -61,11 +61,11 @@ def verify_token(req):
     if challenge and token == TOKEN_VERIFY:
         return challenge
     else:
-        return  jsonify({'error': 'Token Invalido'})
+        return  jsonify({'error': 'Token Invalido'}), 401
 
 def recibir_mensaje(req):
-    r = add_log_message(req)
-    add_log_message(r)
+    req = request.get_json()
+    add_log_message(req)
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 if __name__ == "__main__":
