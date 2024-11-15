@@ -1,12 +1,13 @@
 import json
-from flask import Flask, render_template
+
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
 
 #Configuración de la Base de Datos SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///logmeta.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -19,12 +20,6 @@ class Log(db.Model):
 #Crea Tabla si no Existe
 with app.app_context():
     db.create_all()
-    
-    test1 = Log(texto='Mensaje de Prueba 1')
-    test2 = Log(texto='Mensaje de Prueba 2')
-    db.session.add(test1)
-    db.session.add(test2)
-    db.session.commit()
 
 #Funcion para ordenar registros de fecha y hora
 def ordenar_fecha_hora(reg):
@@ -47,7 +42,31 @@ def add_log_message(texto):
     db.session.add(new_reg)
     db.session.commit()
 
+#Token de verificacion para la configuracion
+TOKEN = 'Shinnosuke_6654*'
 
+@app.route('/webhook', methods=['GET', 'POST'])
+def webhook():
+    if request.method == 'GET':
+        challenge = verify_token(request)
+        return challenge
+    elif request.method == 'POST':
+        response = recibir_mensaje(request)
+        return response
+
+def verify_token(req):
+    token = req.args.get('hub.verify_token')
+    challenge = raq.args.get('hub.challenge')
+
+    if token and challenge == TOKEN:
+        return challenge
+    else:
+        return  jsonify({'error': 'Token Invalido'})
+
+def recibir_mensaje(req):
+    r = add_log_message(req)
+    add_log_message(r )
+    return jsonify({'message': 'EVENT_RECEIVED'})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
