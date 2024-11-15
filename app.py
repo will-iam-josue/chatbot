@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-
+white_list = ['527772005020']
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
@@ -107,7 +107,7 @@ def recibir_mensaje(req):
 
 def enviar_mensaje(texto, numero):
     texto = texto.lower()
-    print(numero)
+
     if "hola" in texto:
         data = {
             "messaging_product": "whatsapp",    
@@ -141,9 +141,10 @@ def enviar_mensaje(texto, numero):
     
     connection = http.client.HTTPSConnection('graph.facebook.com')
     try:
-        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
-        response = connection.getresponse()
-        print(response.status, response.reason)
+        if numero in white_list:
+            connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+            response = connection.getresponse()
+            print(response.status, response.reason)
     except:
         ...
     finally:
