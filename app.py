@@ -65,7 +65,7 @@ def verify_token(req):
 
 def recibir_mensaje(req):
     req = request.get_json()
-    add_log_message(req)
+    add_log_message(json.dumps(req))
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 if __name__ == "__main__":
