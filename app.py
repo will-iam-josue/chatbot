@@ -96,7 +96,7 @@ def recibir_mensaje(req):
                     print('MENSAJE DE TIPO TEXTO!!!...')
                     numero = '527772005020'
                     #numero = f'{numero[1:3]}{numero[4:]}'
-                    texto = messages['text']['body']
+                    texto = message['text']['body']
                     
                     enviar_mensaje(texto, numero)
     except Exception as e:
