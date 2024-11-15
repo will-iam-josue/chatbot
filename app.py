@@ -75,7 +75,7 @@ def recibir_mensaje(req):
         if messages:
             message = messages[0]
             
-            if 'type' in messages:
+            if 'type' in message:
                 tipo = message['type']
                 if tipo == 'interactive':
                     ...
@@ -84,7 +84,7 @@ def recibir_mensaje(req):
                     numero = message['from']
                     texto = messages['text']['body']
                     print(numero)
-                enviar_mensaje(texto, numero)
+                    enviar_mensaje(texto, numero)
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
     return jsonify({'message': 'EVENT_RECEIVED'})
