@@ -110,7 +110,7 @@ def enviar_mensaje(texto, numero):
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
-            "to": nomber,
+            "to": numero,
             "type": "text",
             "text": {
                 "preview_url": False,
@@ -121,7 +121,7 @@ def enviar_mensaje(texto, numero):
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
-            "to": nomber,
+            "to": numero,
             "type": "text",
             "text": {
                 "preview_url": False,
