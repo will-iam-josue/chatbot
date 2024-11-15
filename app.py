@@ -116,7 +116,7 @@ def enviar_mensaje(texto, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": "Hola, como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n1) Una consulta\n2) Una busqueda\n4) Fín"
+                "body": "Hola, como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n1) Una consulta\n2) Una busqueda\n4) Fín \n\nEspera espera solo es una prueba aun no se programa nada mas, vamos paso por paso :D"
             }
         }
     else:
@@ -127,12 +127,12 @@ def enviar_mensaje(texto, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": "Hola , para mas informacion envia un *Hola* nada más"
+                "body": "Hola, para mas informacion envia un *hola* nada más"
             }
         }
 
     #Convertir el diccionario a formato json
-    data = json.dumps(data, ensure_ascii=False)
+    data = json.dumps(data,)
     
     headers = {
         'Content-Type': 'application/json',
