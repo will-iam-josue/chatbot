@@ -48,40 +48,53 @@ TOKEN_VERIFY = 'Shinnosuke_6654*'
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
+        print('INICIO EN EL TOKEN')
         challenge = verify_token(request)
         return challenge
     elif request.method == 'POST':
+        print('ENVIAR UN MENSAJE')
         response = recibir_mensaje(request)
         return response
 
 def verify_token(req):
+    print('VERIFICAR TOKEN!!!...')
     token = req.args.get('hub.verify_token')
     challenge = req.args.get('hub.challenge')
 
     if challenge and token == TOKEN_VERIFY:
+        print('EL TOKEN ES CORRECTO')
         return challenge
     else:
         return  jsonify({'error': 'Token Invalido'}), 401
 
 def recibir_mensaje(req):
+    print('RECIBE UN MENSAJE!!!...')
     req = request.get_json()
     add_log_message(json.dumps(req, ensure_ascii=False)) #Guarda en el log el mensaje con los datos recibidos
     
     try:
+        print('ENTRA A RECIBIR MENSAJE!!!...')
         entry = req['entry'][0]
         changes = entry['changes'][0]
         value = changes['value']
         messages = value['messages']
+        print(entry)
+        print(changes)
+        print(value)
+        print(messages)
         if messages:
+            print('SI TIENE MENSAJE!!!...')
             message = messages[0]
-            
+            print(message)
             if 'type' in message:
                 tipo = message['type']
                 if tipo == 'interactive':
                     ...
                 
-                if 'text' in messages:
+                if 'text' in message:
+                    print('MENSAJE DE TIPO TEXTO!!!...')
                     numero = '527772005020'
+                    numero = f'{numero[1:3]}{numero[3:]}'
                     texto = messages['text']['body']
                     
                     enviar_mensaje(texto, numero)
