@@ -94,8 +94,8 @@ def recibir_mensaje(req):
                 
                 if 'text' in message:
                     print('MENSAJE DE TIPO TEXTO!!!...')
-                    numero = '527772005020'
-                    #numero = f'{numero[1:3]}{numero[4:]}'
+                    #numero = '527772005020'
+                    numero = f'{numero[1:3]}{numero[4:]}'
                     texto = message['text']['body']
                     
                     enviar_mensaje(texto, numero)
@@ -114,7 +114,7 @@ def enviar_mensaje(texto, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": "Hola , como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n 1) Una consulta\n2) Una busqueda"
+                "body": "Hola, como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n1) Una consulta\n2) Una busqueda\n4) Fín"
             }
         }
     else:
