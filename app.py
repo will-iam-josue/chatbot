@@ -83,14 +83,15 @@ def recibir_mensaje(req):
                 if 'text' in messages:
                     numero = message['from']
                     texto = messages['text']['body']
+                    print(numero)
                 enviar_mensaje(texto, numero)
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 def enviar_mensaje(texto, numero):
-    text = texto.lower()
-    
+    texto = texto.lower()
+    print(numero)
     if "hola" in texto:
         data = {
             "messaging_product": "whatsapp",    
