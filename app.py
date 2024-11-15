@@ -96,6 +96,7 @@ def recibir_mensaje(req):
                 
                 if 'text' in message:
                     print('MENSAJE DE TIPO TEXTO!!!...')
+                    numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
                     
