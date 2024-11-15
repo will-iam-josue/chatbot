@@ -1,5 +1,5 @@
 import json
-
+import http.client
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -65,8 +65,71 @@ def verify_token(req):
 
 def recibir_mensaje(req):
     req = request.get_json()
-    add_log_message(json.dumps(req, ensure_ascii=False))
+    add_log_message(json.dumps(req, ensure_ascii=False)) #Guarda en el log el mensaje con los datos recibidos
+    
+    try:
+        entry = req['entry'][0]
+        changes = entry['changes'][0]
+        value = changes['value']
+        messages = value['messages']
+        if messages:
+            message = messages[0]
+            
+            if 'type' in messages:
+                tipo = message['type']
+                if tipo == 'interactive':
+                    ...
+                
+                if 'text' in messages:
+                    numero = message['from']
+                    text = messages['text']['body']
+    except Exception as e:
+        return json.dump({'message': 'EVENT_RECEIVED'})
     return jsonify({'message': 'EVENT_RECEIVED'})
 
+def enviar_mensaje(texto, numero):
+    text = texto.lower()
+    
+    if "hola" in texto:
+        data = {
+            "messaging_product": "whatsapp",    
+            "recipient_type": "individual",
+            "to": nomber,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": "Hola , como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n 1) Una consulta\n2) Una busqueda"
+            }
+        }
+    else:
+        data = {
+            "messaging_product": "whatsapp",    
+            "recipient_type": "individual",
+            "to": nomber,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": "Hola , para mas informacion envia un *Hola* nada más"
+            }
+        }
+
+    #Convertir el diccionario a formato json
+    data = json.dumps(data, ensure_ascii=False)
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+    }
+    
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+    try:
+        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+        response = connection.getresponse()
+        print(response.status, response.reason)
+    except:
+        ...
+    finally:
+        connection.close()
+        
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
