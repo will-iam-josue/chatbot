@@ -1,4 +1,5 @@
 import json
+import logging
 import http.client
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -6,6 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -94,8 +96,7 @@ def recibir_mensaje(req):
                 
                 if 'text' in message:
                     print('MENSAJE DE TIPO TEXTO!!!...')
-                    #numero = '527772005020'
-                    numero = f'{numero[1:3]}{numero[4:]}'
+                    numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
                     
                     enviar_mensaje(texto, numero)
