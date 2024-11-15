@@ -43,7 +43,7 @@ def add_log_message(texto):
     db.session.commit()
 
 #Token de verificacion para la configuracion
-TOKEN = 'Shinnosuke_6654*'
+TOKEN_VERIFY = 'Shinnosuke_6654*'
 
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
@@ -58,7 +58,7 @@ def verify_token(req):
     token = req.args.get('hub.verify_token')
     challenge = req.args.get('hub.challenge')
 
-    if token and challenge == TOKEN:
+    if token and challenge == TOKEN_VERIFY:
         return challenge
     else:
         return  jsonify({'error': 'Token Invalido'})
