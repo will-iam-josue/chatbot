@@ -58,7 +58,7 @@ def verify_token(req):
     token = req.args.get('hub.verify_token')
     challenge = req.args.get('hub.challenge')
 
-    if token and challenge == TOKEN_VERIFY:
+    if challenge and token == TOKEN_VERIFY:
         return challenge
     else:
         return  jsonify({'error': 'Token Invalido'})
