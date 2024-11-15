@@ -94,7 +94,7 @@ def recibir_mensaje(req):
                 if 'text' in message:
                     print('MENSAJE DE TIPO TEXTO!!!...')
                     numero = '527772005020'
-                    numero = f'{numero[1:3]}{numero[3:]}'
+                    #numero = f'{numero[1:3]}{numero[3:]}'
                     texto = messages['text']['body']
                     
                     enviar_mensaje(texto, numero)
@@ -147,4 +147,4 @@ def enviar_mensaje(texto, numero):
         connection.close()
         
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=8001, debug=True)
