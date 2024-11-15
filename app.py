@@ -84,7 +84,7 @@ def recibir_mensaje(req):
                     numero = message['from']
                     text = messages['text']['body']
     except Exception as e:
-        return json.dump({'message': 'EVENT_RECEIVED'})
+        return json.dumps({'message': 'EVENT_RECEIVED'})
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 def enviar_mensaje(texto, numero):
