@@ -81,9 +81,9 @@ def recibir_mensaje(req):
                     ...
                 
                 if 'text' in messages:
-                    numero = message['from']
+                    numero = '527772005020'
                     texto = messages['text']['body']
-                    print(numero)
+                    
                     enviar_mensaje(texto, numero)
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
