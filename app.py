@@ -4,9 +4,10 @@ import http.client
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from api import SecureAPIClient
 
 app = Flask(__name__)
-white_list = ['527772005020']
+white_list = ['527772005020','527341115114','525650835953']
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
@@ -50,52 +51,39 @@ TOKEN_VERIFY = 'Shinnosuke_6654*'
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
-        print('INICIO EN EL TOKEN')
         challenge = verify_token(request)
         return challenge
     elif request.method == 'POST':
-        print('ENVIAR UN MENSAJE')
         response = recibir_mensaje(request)
         return response
 
 def verify_token(req):
-    print('VERIFICAR TOKEN!!!...')
     token = req.args.get('hub.verify_token')
     challenge = req.args.get('hub.challenge')
 
     if challenge and token == TOKEN_VERIFY:
-        print('EL TOKEN ES CORRECTO')
         return challenge
     else:
-        print('TOKEN INVALIDO!!!....')
         return  jsonify({'error': 'Token Invalido'}), 401
 
 def recibir_mensaje(req):
-    print('RECIBE UN MENSAJE!!!...')
     req = request.get_json()
     add_log_message(json.dumps(req, ensure_ascii=False)) #Guarda en el log el mensaje con los datos recibidos
     
     try:
-        print('ENTRA A RECIBIR MENSAJE!!!...')
         entry = req['entry'][0]
         changes = entry['changes'][0]
         value = changes['value']
         messages = value['messages']
-        print(entry)
-        print(changes)
-        print(value)
-        print(messages)
+        
         if messages:
-            print('SI TIENE MENSAJE!!!...')
             message = messages[0]
-            print(message)
             if 'type' in message:
                 tipo = message['type']
                 if tipo == 'interactive':
                     ...
                 
                 if 'text' in message:
-                    print('MENSAJE DE TIPO TEXTO!!!...')
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
@@ -108,7 +96,13 @@ def recibir_mensaje(req):
 def enviar_mensaje(texto, numero):
     texto = texto.lower()
 
-    if "hola" in texto:
+    client = SecureAPIClient("", "95eeed0496e5612455ef21a1cbfbcecd7989d3a7")
+    data = client.post("vista1/", {
+        "busqueda": texto,
+        "req": "req"
+    })    
+    
+    ''' if "hola" in texto:
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
@@ -129,7 +123,7 @@ def enviar_mensaje(texto, numero):
                 "preview_url": False,
                 "body": "Hola, para mas informacion envia un *hola* nada más"
             }
-        }
+        } '''
 
     #Convertir el diccionario a formato json
     data = json.dumps(data,)
@@ -144,7 +138,6 @@ def enviar_mensaje(texto, numero):
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
-            print(response.status, response.reason)
     except:
         ...
     finally:
