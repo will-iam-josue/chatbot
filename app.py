@@ -126,7 +126,7 @@ def enviar_mensaje(texto, numero):
         } '''
 
     #Convertir el diccionario a formato json
-    data = json.dumps(data,)
+    data = json.dumps(str(data),)
     
     headers = {
         'Content-Type': 'application/json',
