@@ -102,6 +102,12 @@ def enviar_mensaje(texto, numero):
         "req": "req"
     })   
     
+    if response and "resultados" in response:
+        # Construir un string con los valores clave de cada diccionario
+        resultados_str = "\n".join(
+            "\n ".join(f"{key}: {value}" for key, value in diccionario.items())
+            for diccionario in response["resultados"]
+        )
 
     data = {
         "messaging_product": "whatsapp",    
@@ -110,7 +116,7 @@ def enviar_mensaje(texto, numero):
         "type": "text",
         "text": {
             "preview_url": False,
-            "body": str(response)
+            "body": resultados_str
         }
     }
     
