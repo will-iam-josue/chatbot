@@ -97,10 +97,22 @@ def enviar_mensaje(texto, numero):
     texto = texto.lower()
 
     client = SecureAPIClient("", "95eeed0496e5612455ef21a1cbfbcecd7989d3a7")
-    data = client.post("vista1/", {
+    response = client.post("vista1/", {
         "busqueda": texto,
         "req": "req"
-    })    
+    })   
+    
+
+    data = {
+        "messaging_product": "whatsapp",    
+        "recipient_type": "individual",
+        "to": numero,
+        "type": "text",
+        "text": {
+            "preview_url": False,
+            "body": response['resultados']
+        }
+    }
     
     ''' if "hola" in texto:
         data = {
@@ -126,7 +138,7 @@ def enviar_mensaje(texto, numero):
         } '''
 
     #Convertir el diccionario a formato json
-    data = json.dumps(str(data),)
+    data = json.dumps(data,)
     
     headers = {
         'Content-Type': 'application/json',
