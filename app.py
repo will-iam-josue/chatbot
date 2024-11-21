@@ -96,7 +96,7 @@ def recibir_mensaje(req):
 def enviar_mensaje(texto, numero):
     texto = texto.lower()
 
-    client = SecureAPIClient("", "95eeed0496e5612455ef21a1cbfbcecd7989d3a7")
+    client = SecureAPIClient("", "8cdfbd8e20bd49ab0e5a271bde6101d48f0a5d9d")
     response = client.post("vista1/", {
         "busqueda": texto,
         "req": "req"
