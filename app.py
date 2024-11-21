@@ -110,7 +110,7 @@ def enviar_mensaje(texto, numero):
         "type": "text",
         "text": {
             "preview_url": False,
-            "body": response['resultados']
+            "body": str(response)
         }
     }
     
