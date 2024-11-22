@@ -3,7 +3,7 @@ import requests
 class SecureAPIClient:
     def __init__(self, base_url, token):
         self.session = requests.Session()
-        self.base_url = "http://127.0.0.1:8000/ojo/api/"
+        self.base_url = "https://resmor.cesmorelos.gob.mx/ef/ojo/api/"
         self.session.headers.update({
             "Content-Type": "application/json",
             "Authorization": f"Token {token}"
