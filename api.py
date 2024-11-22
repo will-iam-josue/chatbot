@@ -3,7 +3,7 @@ import requests
 class SecureAPIClient:
     def __init__(self, base_url, token):
         self.session = requests.Session()
-        self.base_url = "https://resmor.cesmorelos.gob.mx/ef/ojo/api/"
+        self.base_url = "http://127.0.0.1:8000/ojo/api/"
         self.session.headers.update({
             "Content-Type": "application/json",
             "Authorization": f"Token {token}"
@@ -22,9 +22,12 @@ class SecureAPIClient:
 # Uso
 ''' if __name__ == "__main__":
 
-    client = SecureAPIClient("", "95eeed0496e5612455ef21a1cbfbcecd7989d3a7")
-    resultado_busqueda = client.post("vista1/", {
+    client = SecureAPIClient("", "8cdfbd8e20bd49ab0e5a271bde6101d48f0a5d9d")
+    resultado_busqueda = client.post("busqueda/v1/", {
         "busqueda": "HECTOR ROSALES GARCIA",
         "req": "req"
-    })
-    print("Resultado de la búsqueda:", resultado_busqueda) '''
+    }) '''
+
+
+
+    #print(resultado_busqueda)

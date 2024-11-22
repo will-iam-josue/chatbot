@@ -97,17 +97,42 @@ def enviar_mensaje(texto, numero):
     texto = texto.lower()
 
     client = SecureAPIClient("", "8cdfbd8e20bd49ab0e5a271bde6101d48f0a5d9d")
-    response = client.post("vista1/", {
+    response = client.post("busqueda/v1/", {
         "busqueda": texto,
         "req": "req"
     })   
     
-    if response and "resultados" in response:
-        # Construir un string con los valores clave de cada diccionario
-        resultados_str = "\n".join(
-            "\n ".join(f"{key}: {value}" for key, value in diccionario.items())
-            for diccionario in response["resultados"]
-        )
+    cadena = ""
+    if response and "resultadosResmor" in response:
+        cadena = cadena + "*SIDIP*\n"
+        resmor = response['resultadosResmor']
+        if resmor:
+            for obj in resmor:
+                #print(obj['nombre'])
+                cadena = cadena + "*NOMBRE*: " + str(obj['nombre']) + " " + str(obj['apellido_paterno']) + " " +str(obj['apellido_materno'])+ "\n"
+                cadena = cadena + "*FECHA DE NACIMIENTO*: " + str(obj['fecha_nacimiento']) + "\n"
+                cadena = cadena + "*DEPENDENCIA*: " + str(obj['dependencia']) + "\n"
+                cadena = cadena + "*INSTITUCION*: " + str(obj['institucion']) + "\n\n"
+        else:
+            cadena=cadena+"SIN INFORMACIÓN\n\n"
+
+    if response and "resultados089" in response:
+        cadena = cadena+"*089*\n"
+        resultados089 = response['resultados089']
+        if resultados089:
+            for obj in resultados089:
+                cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+        else:
+            cadena=cadena+"SIN INFORMACIÓN\n\n"
+
+    if response and "resultados911" in response:
+        cadena = cadena+"*911*\n"
+        resultados911 = response['resultados911']
+        if resultados911:
+            for obj in resultados911:
+                cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+        else:
+            cadena=cadena+"SIN INFORMACIÓN\n\n"
 
     data = {
         "messaging_product": "whatsapp",    
@@ -116,7 +141,7 @@ def enviar_mensaje(texto, numero):
         "type": "text",
         "text": {
             "preview_url": False,
-            "body": resultados_str
+            "body": cadena
         }
     }
     
