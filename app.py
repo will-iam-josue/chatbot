@@ -102,7 +102,7 @@ def enviar_mensaje(texto, numero):
         "req": "req"
     })   
     
-    cadena = ""
+    cadena = f"{texto.upper()}:\n"
     if response and "resultadosResmor" in response:
         cadena = cadena + "*SIDIP*\n"
         resmor = response['resultadosResmor']
