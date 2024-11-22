@@ -148,7 +148,7 @@ def enviar_mensaje(texto, numero):
                     if i >= 6:
                         break
                     cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
-                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL 911"
+                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + " REGISTROS DEL 911"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
