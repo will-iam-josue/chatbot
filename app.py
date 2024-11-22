@@ -117,20 +117,38 @@ def enviar_mensaje(texto, numero):
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
     if response and "resultados089" in response:
+
         cadena = cadena+"*089*\n"
+
         resultados089 = response['resultados089']
+        cantidad = len(resultados089)
         if resultados089:
-            for obj in resultados089:
-                cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+            if len(resultados089) < 5:
+                for obj in resultados089:
+                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+            else:
+                for i, obj in enumerate(resultados089):
+                    if i >= 6:
+                        break
+                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL 089"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
     if response and "resultados911" in response:
-        cadena = cadena+"*911*\n"
+        cadena = cadena + "*911*\n"
         resultados911 = response['resultados911']
+        cantidad = len(resultados911)
         if resultados911:
-            for obj in resultados911:
-                cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+            if len(resultados911) < 5:
+                for obj in resultados911:
+                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+            else:
+                for i, obj in enumerate(resultados911):
+                    if i >= 6:
+                        break
+                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
+                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL 911"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
