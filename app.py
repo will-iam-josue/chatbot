@@ -7,7 +7,7 @@ from datetime import datetime
 from api import SecureAPIClient
 
 app = Flask(__name__)
-white_list = ['525650835953','527772005020','527341115114', '527777877176']
+white_list = ['525650835953','527772005020','527341115114', '527771495695', '522291881930']
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
