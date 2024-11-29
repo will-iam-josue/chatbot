@@ -11,6 +11,7 @@ class SecureAPIClient:
 
     def post(self, endpoint, payload):
         try:
+            print('HACE POST', flush=True)
             url = f"{endpoint}"
             response = self.session.post(url, json=payload)
             response.raise_for_status()
@@ -20,7 +21,7 @@ class SecureAPIClient:
             return None
 
 def consulta_api(url, datos):
-    print(f"Consultando {url} con datos {datos}...")
+    print(f"Consultando {url} con datos {datos}...", flush=True)
     try:
         client = SecureAPIClient(base_url="", token="8cdfbd8e20bd49ab0e5a271bde6101d48f0a5d9d")
         resultado_busqueda = client.post(url, datos)
@@ -127,5 +128,5 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
-
+    print(cadena, flush=True)
     return cadena

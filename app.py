@@ -13,7 +13,7 @@ white_list = ['525650835953','527772005020','527341115114', '527771495695', '522
 # Lista de URLs a consultar
 urls = [
     "https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/",
-    "httpS://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/",
+    "https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/",
 ]
 
 logging.basicConfig(level=logging.DEBUG)
@@ -121,6 +121,7 @@ def enviar_mensaje(texto, numero):
             try:
                 cadena = f"*{texto.upper()}:*\n\n"
                 resultado_busqueda = future.result()
+                print('RESULTADOS', flush=True)
                 if resultado_busqueda:
                     cadena += resultado_busqueda
                     data = {
@@ -140,12 +141,13 @@ def enviar_mensaje(texto, numero):
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
                     }
+                    print(data, flush=True)
                     if numero in white_list:
                         connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
                         response = connection.getresponse()
                         print('SE ENVIO MENSAJE DE MANERA CORRECTA', flush=True)
             except Exception as e:
-                print(f"Error en {url}: {e}")
+                print(f"Error en {url}: {e}", flush=True)
             finally:
                 connection.close()
         
