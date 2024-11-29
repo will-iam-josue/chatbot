@@ -122,6 +122,7 @@ def enviar_mensaje(texto, numero):
                 cadena = f"*{texto.upper()}:*\n\n"
                 resultado_busqueda = future.result()
                 print('RESULTADOS', flush=True)
+                print(resultado_busqueda, flush=True)
                 if resultado_busqueda:
                     cadena += resultado_busqueda
                     data = {
