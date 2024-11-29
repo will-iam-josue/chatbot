@@ -1,13 +1,21 @@
 import json
 import logging
 import http.client
-from flask import Flask, render_template, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from api import SecureAPIClient
+from flask_sqlalchemy import SQLAlchemy
+from api import SecureAPIClient, consulta_api, respuesta
+from flask import Flask, render_template, request, jsonify
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 app = Flask(__name__)
 white_list = ['525650835953','527772005020','527341115114', '527771495695', '522291881930']
+
+# Lista de URLs a consultar
+urls = [
+    "https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/",
+    "httpS://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/",
+]
+
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
@@ -95,114 +103,48 @@ def recibir_mensaje(req):
 
 def enviar_mensaje(texto, numero):
     texto = texto.lower()
-
-    client = SecureAPIClient("", "8cdfbd8e20bd49ab0e5a271bde6101d48f0a5d9d")
-    response = client.post("busqueda/v1/", {
+    # Datos comunes para todas las solicitudes
+    datos = {
         "busqueda": texto,
         "req": "req"
-    })   
-    
-    cadena = f"*{texto.upper()}:*\n\n"
-    if response and "resultadosResmor" in response:
-        cadena = cadena + "*SIDIP*\n"
-        resmor = response['resultadosResmor']
-        if resmor:
-            for obj in resmor:
-                #print(obj['nombre'])
-                cadena = cadena + "*NOMBRE*: " + str(obj['nombre']) + " " + str(obj['apellido_paterno']) + " " +str(obj['apellido_materno'])+ "\n"
-                cadena = cadena + "*FECHA DE NACIMIENTO*: " + str(obj['fecha_nacimiento']) + "\n"
-                cadena = cadena + "*DEPENDENCIA*: " + str(obj['dependencia']) + "\n"
-                cadena = cadena + "*INSTITUCION*: " + str(obj['institucion']) + "\n\n"
-        else:
-            cadena=cadena+"SIN INFORMACIÓN\n\n"
-
-    if response and "resultados089" in response:
-
-        cadena = cadena+"*089*\n"
-
-        resultados089 = response['resultados089']
-        cantidad = len(resultados089)
-        if resultados089:
-            if len(resultados089) < 5:
-                for obj in resultados089:
-                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
-            else:
-                for i, obj in enumerate(resultados089):
-                    if i >= 6:
-                        break
-                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
-                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL 089"
-        else:
-            cadena=cadena+"SIN INFORMACIÓN\n\n"
-
-    if response and "resultados911" in response:
-        cadena = cadena + "*911*\n"
-        resultados911 = response['resultados911']
-        cantidad = len(resultados911)
-        if resultados911:
-            if len(resultados911) < 5:
-                for obj in resultados911:
-                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
-            else:
-                for i, obj in enumerate(resultados911):
-                    if i >= 6:
-                        break
-                    cadena = cadena + "FOLIO:" + str(obj['folio']) + "\n\n"
-                cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + " REGISTROS DEL 911"
-        else:
-            cadena=cadena+"SIN INFORMACIÓN\n\n"
-
-    data = {
-        "messaging_product": "whatsapp",    
-        "recipient_type": "individual",
-        "to": numero,
-        "type": "text",
-        "text": {
-            "preview_url": False,
-            "body": cadena
-        }
     }
-    
-    ''' if "hola" in texto:
-        data = {
-            "messaging_product": "whatsapp",    
-            "recipient_type": "individual",
-            "to": numero,
-            "type": "text",
-            "text": {
-                "preview_url": False,
-                "body": "Hola, como estas Bienvenido al chatbootsito.\n¿Que es lo que deseas hacer?\n1) Una consulta\n2) Una busqueda\n4) Fín \n\nEspera espera solo es una prueba aun no se programa nada mas, vamos paso por paso :D"
-            }
-        }
-    else:
-        data = {
-            "messaging_product": "whatsapp",    
-            "recipient_type": "individual",
-            "to": numero,
-            "type": "text",
-            "text": {
-                "preview_url": False,
-                "body": "Hola, para mas informacion envia un *hola* nada más"
-            }
-        } '''
-
-    #Convertir el diccionario a formato json
-    data = json.dumps(data,)
-    
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
-    }
-    
-    connection = http.client.HTTPSConnection('graph.facebook.com')
-    try:
-        if numero in white_list:
-            connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
-            response = connection.getresponse()
-    except:
-        ...
-    finally:
-        connection.close()
+    # Crear un ejecutor de hilos
+    with ThreadPoolExecutor() as executor:
+        # Enviar las tareas al executor
+        futures = {executor.submit(consulta_api, url, datos): url for url in urls}
+        # Procesar las respuestas conforme estén listas
+        for future in as_completed(futures):
+            url = futures[future]
+            connection = http.client.HTTPSConnection('graph.facebook.com')
+            try:
+                cadena = f"*{texto.upper()}:*\n\n"
+                resultado_busqueda = future.result()
+                if resultado_busqueda:
+                    cadena += resultado_busqueda
+                    data = {
+                        "messaging_product": "whatsapp",    
+                        "recipient_type": "individual",
+                        "to": numero,
+                        "type": "text",
+                        "text": {
+                            "preview_url": False,
+                            "body": cadena
+                        }
+                    }
+                    #Convertir el diccionario a formato json
+                    data = json.dumps(data,)
+                    
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+                    }
+                    if numero in white_list:
+                        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+                        response = connection.getresponse()
+            except Exception as e:
+                print(f"Error en {url}: {e}")
+            finally:
+                connection.close()
         
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
