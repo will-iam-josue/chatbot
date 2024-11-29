@@ -11,13 +11,12 @@ class SecureAPIClient:
 
     def post(self, endpoint, payload):
         try:
-            print('HACE POST', flush=True)
             url = f"{endpoint}"
             response = self.session.post(url, json=payload)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Error al realizar la solicitud POST: {e}")
+            print(f"Error al realizar la solicitud POST: {e}", flush=True)
             return None
 
 def consulta_api(url, datos):
@@ -37,7 +36,6 @@ def respuesta(resultado_busqueda):
         resmor = resultado_busqueda['resultadosResmor']
         if resmor:
             for obj in resmor:
-                #print(obj['nombre'])
                 cadena = cadena + "*NOMBRE*: " + str(obj['nombre']) + " " + str(obj['apellido_paterno']) + " " +str(obj['apellido_materno'])+ "\n"
                 cadena = cadena + "*FECHA DE NACIMIENTO*: " + str(obj['fecha_nacimiento']) + "\n"
                 cadena = cadena + "*DEPENDENCIA*: " + str(obj['dependencia']) + "\n"
@@ -128,5 +126,4 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
-    print(cadena, flush=True)
     return cadena

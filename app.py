@@ -108,21 +108,17 @@ def enviar_mensaje(texto, numero):
         "busqueda": texto,
         "req": "req"
     }
-    print(datos, flush=True)
     # Crear un ejecutor de hilos
     with ThreadPoolExecutor() as executor:
         # Enviar las tareas al executor
         futures = {executor.submit(consulta_api, url, datos): url for url in urls}
         # Procesar las respuestas conforme estén listas
         for future in as_completed(futures):
-            print('EJECUTANDO HILOS', flush=True)
             url = futures[future]
             connection = http.client.HTTPSConnection('graph.facebook.com')
             try:
                 cadena = f"*{texto.upper()}:*\n\n"
                 resultado_busqueda = future.result()
-                print('RESULTADOS', flush=True)
-                print(resultado_busqueda, flush=True)
                 if resultado_busqueda:
                     cadena += respuesta(resultado_busqueda)
                     data = {
@@ -142,11 +138,9 @@ def enviar_mensaje(texto, numero):
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
                     }
-                    print(data, flush=True)
                     if numero in white_list:
                         connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
                         response = connection.getresponse()
-                        print('SE ENVIO MENSAJE DE MANERA CORRECTA', flush=True)
             except Exception as e:
                 print(f"Error en {url}: {e}", flush=True)
             finally:
