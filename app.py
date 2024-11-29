@@ -97,9 +97,9 @@ def recibir_mensaje(req):
                     texto = message['text']['body']
                     
                     enviar_mensaje(texto, numero)
+        return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
-    return jsonify({'message': 'EVENT_RECEIVED'})
 
 def enviar_mensaje(texto, numero):
     texto = texto.lower()
