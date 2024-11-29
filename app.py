@@ -124,7 +124,7 @@ def enviar_mensaje(texto, numero):
                 print('RESULTADOS', flush=True)
                 print(resultado_busqueda, flush=True)
                 if resultado_busqueda:
-                    cadena += resultado_busqueda
+                    cadena += respuesta(resultado_busqueda)
                     data = {
                         "messaging_product": "whatsapp",    
                         "recipient_type": "individual",
