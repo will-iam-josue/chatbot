@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 app = Flask(__name__)
-white_list = ['525650835953','527772005020','527341115114', '527771495695', '522291881930']
+white_list = ['525650835953','527777877176','527775006263', '527771495695', '522291881930']
 
 # Lista de URLs a consultar
 urls = [
