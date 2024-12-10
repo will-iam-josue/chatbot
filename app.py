@@ -12,8 +12,13 @@ white_list = ['525650835953','527777877176','527775006263', '527771495695', '522
 
 # Lista de URLs a consultar
 urls = [
-    "https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/",
-    "https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/",
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda3/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda4/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda5/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
 ]
 
 logging.basicConfig(level=logging.DEBUG)
