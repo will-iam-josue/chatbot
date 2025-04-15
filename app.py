@@ -182,7 +182,7 @@ def recibir_mensaje(req):
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
                         print(res, flush=True)
-                        respuesta(res, numero)
+                        respuestas(res, numero)
                     
                 if 'text' in message:
                     numero = message['from']
