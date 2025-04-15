@@ -108,6 +108,8 @@ def menu(numero):
     connection.close()
 
 def respuestas(rs_id, numero):
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+    print(rs_id, flush=True)
     if rs_id == 'cons_folio':
         ...
     elif rs_id == 'cons_nomb':
@@ -124,6 +126,7 @@ def respuestas(rs_id, numero):
         #Convertir el diccionario a formato json
         data = json.dumps(data,)
         
+        print(data, flush=True)
         headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
@@ -133,6 +136,7 @@ def respuestas(rs_id, numero):
             response = connection.getresponse()
             req = response.get_json()
             print(req, flush=True)
+            connection.close()
         #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])
@@ -177,6 +181,7 @@ def recibir_mensaje(req):
                     print(msg_type, flush=True)
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
+                        print(res, flush=True)
                         respuesta(res, numero)
                     
                 if 'text' in message:
