@@ -174,7 +174,7 @@ def recibir_mensaje(req):
                     numero = f'{numero[0:2]}{numero[3:]}'
                     msg_type = message['interactive']['type']
                     
-                    if msg_type == 'button_repy':
+                    if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
                         respuesta(res, numero)
                     
