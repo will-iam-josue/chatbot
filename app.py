@@ -89,13 +89,6 @@ def menu(numero):
                             "title": "Realizar busqueda"
                         }
                     },
-                    {
-                        "type": "reply",
-                        "reply": {
-                            "id": "opcion_3",
-                            "title": "Hablar con un agente"
-                        }
-                    }
                 ]
             }
         }
