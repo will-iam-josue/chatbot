@@ -78,15 +78,15 @@ def menu(numero):
                     {
                         "type": "reply",
                         "reply": {
-                            "id": "opcion_1",
+                            "id": "cons_folio",
                             "title": "Consultar Folio"
                         }
                     },
                     {
                         "type": "reply",
                         "reply": {
-                            "id": "opcion_2",
-                            "title": "Realizar busqueda"
+                            "id": "cons_nomb",
+                            "title": "Realizar busqueda de nombre"
                         }
                     },
                 ]
@@ -104,8 +104,36 @@ def menu(numero):
     if numero in white_list:
         connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
         response = connection.getresponse()
-        print(response.read().decode())
+        print(response.read().decode(), flush=True)
     connection.close()
+
+def respuestas(rs_id, numero):
+    if rs_id == 'cons_folio':
+        ...
+    elif rs_id == 'cons_nomb':
+        data = {
+            "messaging_product": "whatsapp",    
+            "recipient_type": "individual",
+            "to": numero,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": 'Introduce el nombre a buscar'
+            }
+        }
+        #Convertir el diccionario a formato json
+        data = json.dumps(data,)
+        
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+        }
+        if numero in white_list:
+            connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+            response = connection.getresponse()
+            req = response.get_json()
+            print(req, flush=True)
+        #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
@@ -138,10 +166,18 @@ def recibir_mensaje(req):
         if messages:
             message = messages[0]
             if 'type' in message:
-                tipo = message['type']
-                if tipo == 'interactive':
-                    ...
                 
+                tipo = message['type']
+                
+                if tipo == 'interactive':
+                    numero = message['from']
+                    numero = f'{numero[0:2]}{numero[3:]}'
+                    msg_type = message['interactive']['type']
+                    
+                    if msg_type == 'button_repy':
+                        res = message['interactive']['button_reply']['id']
+                        respuesta(res, numero)
+                    
                 if 'text' in message:
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
