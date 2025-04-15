@@ -86,7 +86,7 @@ def menu(numero):
                         "type": "reply",
                         "reply": {
                             "id": "cons_nomb",
-                            "title": "Realizar busqueda de nombre"
+                            "title": "Busqueda nombre"
                         }
                     },
                 ]
@@ -168,12 +168,13 @@ def recibir_mensaje(req):
             if 'type' in message:
                 
                 tipo = message['type']
-                
+                print(tipo, flush=True)
                 if tipo == 'interactive':
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
+                    print(numero, flush=True)
                     msg_type = message['interactive']['type']
-                    
+                    print(msg_type, flush=True)
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
                         respuesta(res, numero)
