@@ -3,12 +3,15 @@ import logging
 import http.client
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from api import SecureAPIClient, consulta_api, respuesta
 from flask import Flask, render_template, request, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 app = Flask(__name__)
 white_list = ['525650835953','527777877176','527775006263', '527771495695', '522291881930']
+
+user_states = {}  # Diccionario: {numero: estado}
 
 # Lista de URLs a consultar
 urls = [
@@ -107,13 +110,16 @@ def menu(numero):
         print(response.read().decode(), flush=True)
     connection.close()
 
+def cons_folio911(folio, numero):
+    ...
+
 def respuestas(rs_id, numero):
     connection = http.client.HTTPSConnection('graph.facebook.com')
-    print(rs_id, flush=True)
-    print(numero, flush=True)
+
     if rs_id == 'cons_folio':
         ...
     elif rs_id == 'cons_nomb':
+        user_states[numero] = 'esperando_nombre'
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
@@ -130,13 +136,12 @@ def respuestas(rs_id, numero):
             'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
         }
         data = json.dumps(data)
-        print(data, flush=True)
         
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
-            print(response.read().decode(), flush=True)
         connection.close()
+        
         #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])
@@ -172,16 +177,13 @@ def recibir_mensaje(req):
             if 'type' in message:
                 
                 tipo = message['type']
-                print(tipo, flush=True)
                 if tipo == 'interactive':
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
-                    print(numero, flush=True)
                     msg_type = message['interactive']['type']
-                    print(msg_type, flush=True)
+
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
-                        print(res, flush=True)
                         respuestas(res, numero)
                     
                 if 'text' in message:
@@ -189,10 +191,16 @@ def recibir_mensaje(req):
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
                     
-                    if texto in['hola', 'menu', 'inicio', 'empezar', 'buenas']:
+                    estado = user_states.get(numero)
+                    print(estado, flush=True)
+                    if estado == 'esperando_nombre':
+                        user_states.pop(numero, None)
+                        enviar_mensaje(texto, numero)
+                    elif texto.lower() in['hola', 'menu', 'inicio', 'empezar', 'buenas']:
                         menu(numero)
                     else:
                         enviar_mensaje(texto, numero)
+                        
         return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
