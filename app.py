@@ -61,6 +61,59 @@ def add_log_message(texto):
 #Token de verificacion para la configuracion
 TOKEN_VERIFY = 'Shinnosuke_6654*'
 
+def menu(numero):
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+
+    data = {
+        "messaging_product": "whatsapp",
+        "to": numero,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": "Hola 👋, ¿qué te gustaría hacer?"
+            },
+            "action": {
+                "buttons": [
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "opcion_1",
+                            "title": "Consultar Folio"
+                        }
+                    },
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "opcion_2",
+                            "title": "Realizar busqueda"
+                        }
+                    },
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "opcion_3",
+                            "title": "Hablar con un agente"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+    }
+
+    data = json.dumps(data)
+
+    if numero in white_list:
+        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+        response = connection.getresponse()
+        print(response.read().decode())
+    connection.close()
+
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
@@ -101,7 +154,10 @@ def recibir_mensaje(req):
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
                     
-                    enviar_mensaje(texto, numero)
+                    if texto in['hola', 'menu', 'inicio', 'empezar', 'buenas']:
+                        menu(numero)
+                    else:
+                        enviar_mensaje(texto, numero)
         return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
