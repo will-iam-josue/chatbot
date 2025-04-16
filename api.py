@@ -376,4 +376,23 @@ def respuesta(resultado_busqueda):
         else:
             cadena = cadena + "SIN INFORMACIÓN\n\n"
     
+    if resultado_busqueda and 'vehiculo_robo_vehiculo' in resultado_busqueda:
+        cadena = cadena + "*VEHICULO OCRA*\n"
+        resultadosOcra = resultado_busqueda["vehiculo_robo_vehiculo"]
+        if resultadosOcra:
+            for obj in resultadosOcra:
+                cadena = cadena + "*NÚMERO SERIE:* " + str(obj["numero_serie"]) + "\n"
+                cadena = cadena + "*NÚMERO MOTOR:* " + str(obj["numero_motor"]) + "\n"
+                cadena = cadena + "*PLACA:* " + str(obj["placa"]) + "\n"
+                cadena = cadena + "*MARCA:* " + str(obj["marca"]) + "\n"
+                cadena = cadena + "*TIPO:* " + str(obj["tipo"]) + "\n"
+                cadena = cadena + "*MODELO:* " + str(obj["modelo"]) + "\n"
+                cadena = cadena + "*COLOR:* " + str(obj["color"]) + "\n"
+                cadena = cadena + "*FECHA ROBO:* " + str(obj["fecha_robo"]) + "\n"
+                cadena = cadena + "*ESTADO:* " + str(obj["estado"]) + "\n"
+                cadena = cadena + "*MUNICIPIO:* " + str(obj["municipio"]) + "\n"
+                cadena = cadena + "*ACTA ROBO:* " + str(obj["acta_robo"]) + "\n"
+                cadena = cadena + "*FECHA CARGA:* " + str(obj["fecha_carga"]) + "\n\n"
+        else:
+            cadena = cadena + "SIN INFORMACIÓN\n\n"
     return cadena
