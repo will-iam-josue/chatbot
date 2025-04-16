@@ -170,7 +170,7 @@ def cons_folio911(folio, numero):
     if rs and 'resultadosFolio911' in rs:
         for fol in rs['resultadosFolio911']:
             print(fol, flush=True)
-            texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"].strftime("%d/%m/%Y")}\n*Incidente:* {fol["Tipo_incidente"]}'
+            texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* {fol["Tipo_incidente"]}'
     else:
         texto += '*NO SE ENCONTRO EL FOLIO PROPORCIONADO FAVOR DE VERIFICARLO*'
     print(texto, flush=True)
