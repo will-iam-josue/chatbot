@@ -183,7 +183,7 @@ def cons_folio911(folio, numero):
             'Authorization': auth
         }
         data = json.dumps(data)
-        
+        print(data, flush=True)
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
@@ -226,7 +226,7 @@ def mensaje(numero, mensaje):
 def respuestas(rs_id, numero):
     if rs_id == 'cons_folio':
         user_states[numero] = 'esperando_folio'
-        mensaje(numero, '*Introduce el folio de 911 a consultar')
+        mensaje(numero, '*Introduce el folio de 911 a consultar*')
     elif rs_id == 'cons_nomb':
         user_states[numero] = 'esperando_nombre'
         mensaje(numero, '*Introduce el nombre a buscar*')
