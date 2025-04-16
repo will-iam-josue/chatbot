@@ -74,7 +74,7 @@ def menu(numero):
         "interactive": {
             "type": "button",
             "body": {
-                "text": "Hola 👋, ¿qué te gustaría hacer?"
+                "text": "*Hola 👋, ¿qué te gustaría hacer?*"
             },
             "action": {
                 "buttons": [
@@ -120,7 +120,7 @@ def otra_consulta(numero):
         "interactive": {
             "type": "button",
             "body": {
-                "text": "¿Deseas realizar otra consulta?"
+                "text": "*¿Deseas realizar otra consulta?*"
             },
             "action": {
                 "buttons": [
@@ -157,7 +157,41 @@ def otra_consulta(numero):
     connection.close()
 
 def cons_folio911(folio, numero):
-    ...
+    print(folio, flush=True)
+    print(numero, flush=True)
+    datos = {
+        "busqueda": folio,
+        "req": "req"
+    }
+    rs = consulta_api('https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/', datos)
+    print(rs, flush=True)
+    try:
+        connection = http.client.HTTPSConnection('graph.facebook.com')
+        data = {
+            "messaging_product": "whatsapp",    
+            "recipient_type": "individual",
+            "to": numero,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": rs
+            }
+        }
+            #Convertir el diccionario a formato json
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': auth
+        }
+        data = json.dumps(data)
+        
+        if numero in white_list:
+            connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+            response = connection.getresponse()
+    except Exception as e:
+        print(f"Error en {url}: {e}", flush=True)
+    finally:
+        connection.close()
+    otra_consulta(numero)
 
 def mensaje(numero, mensaje):
     print(numero, flush=True)
@@ -191,10 +225,11 @@ def mensaje(numero, mensaje):
 
 def respuestas(rs_id, numero):
     if rs_id == 'cons_folio':
-        ...
+        user_states[numero] = 'esperando_folio'
+        mensaje(numero, '*Introduce el folio de 911 a consultar')
     elif rs_id == 'cons_nomb':
         user_states[numero] = 'esperando_nombre'
-        mensaje(numero, 'Introduce el nombre a buscar')
+        mensaje(numero, '*Introduce el nombre a buscar*')
     elif rs_id == 'otra_si':
         menu(numero)
     elif rs_id == 'otra_no':
@@ -254,6 +289,9 @@ def recibir_mensaje(req):
                     if estado == 'esperando_nombre':
                         user_states.pop(numero, None)
                         enviar_mensaje(texto, numero)
+                    elif estado == 'esperando_folio':
+                        user_states.pop(numero, None)
+                        cons_folio911(texto, numero)
                     elif texto.lower() in['hola', 'menu', 'inicio', 'empezar', 'buenas']:
                         menu(numero)
                     else:
