@@ -174,7 +174,7 @@ def cons_folio911(folio, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": rs
+                "body": rs if rs else 'NO SE HA ENCONTRADO EL FOLIO FAVOR DE VALIDARLO'
             }
         }
             #Convertir el diccionario a formato json
@@ -187,6 +187,7 @@ def cons_folio911(folio, numero):
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
+            print(response.read().decode(), flush=True)
     except Exception as e:
         print(f"Error en {url}: {e}", flush=True)
     finally:
