@@ -160,7 +160,10 @@ def cons_folio911(folio, numero):
     ...
 
 def mensaje(numero, mensaje):
+    print(numero, flush=True)
+    print(mensaje, flush=True)
     try:
+        connection = http.client.HTTPSConnection('graph.facebook.com')
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
@@ -187,8 +190,6 @@ def mensaje(numero, mensaje):
         connection.close()
 
 def respuestas(rs_id, numero):
-    connection = http.client.HTTPSConnection('graph.facebook.com')
-
     if rs_id == 'cons_folio':
         ...
     elif rs_id == 'cons_nomb':
@@ -197,7 +198,7 @@ def respuestas(rs_id, numero):
     elif rs_id == 'otra_si':
         menu(numero)
     elif rs_id == 'otra_no':
-        mensaje(numero, 'Gracias por utilizar el bot!...')
+        mensaje(numero, '*Gracias por utilizar el bot!...*')
         #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])
@@ -240,6 +241,7 @@ def recibir_mensaje(req):
 
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
+                        print(res, flush=True)
                         respuestas(res, numero)
                     
                 if 'text' in message:
