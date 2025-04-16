@@ -167,7 +167,7 @@ def cons_folio911(folio, numero):
     rs = consulta_api('https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/', datos)
     print(rs, flush=True)
     texto = f'*Folio 911 - {folio}*\n'
-    if rs and 'resultadosFolio911' in rs:
+    if rs and 'resultadosFolio911' != []:
         for fol in rs['resultadosFolio911']:
             print(fol, flush=True)
             texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* {fol["Tipo_incidente"]}'
