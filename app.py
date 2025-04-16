@@ -155,6 +155,7 @@ def otra_consulta(numero):
         response = connection.getresponse()
         print(response.read().decode(), flush=True)
     connection.close()
+    return jsonify({'message': 'EVENT_RECEIVED'})
 
 def cons_folio911(folio, numero):
     print(folio, flush=True)
@@ -188,11 +189,15 @@ def cons_folio911(folio, numero):
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
             print(response.read().decode(), flush=True)
+        return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         print(f"Error en {url}: {e}", flush=True)
+        return jsonify({'message': 'EVENT_RECEIVED'})
     finally:
         connection.close()
+        return jsonify({'message': 'EVENT_RECEIVED'})
     otra_consulta(numero)
+    return jsonify({'message': 'EVENT_RECEIVED'})
 
 def mensaje(numero, mensaje):
     print(numero, flush=True)
@@ -219,10 +224,13 @@ def mensaje(numero, mensaje):
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
+        return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         print(f"Error en {url}: {e}", flush=True)
+        return jsonify({'message': 'EVENT_RECEIVED'})
     finally:
         connection.close()
+        return jsonify({'message': 'EVENT_RECEIVED'})
 
 def respuestas(rs_id, numero):
     if rs_id == 'cons_folio':
