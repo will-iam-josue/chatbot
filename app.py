@@ -166,6 +166,12 @@ def cons_folio911(folio, numero):
     }
     rs = consulta_api('https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/', datos)
     print(rs, flush=True)
+    texto = f'*Folio 911: {folio}*\n'
+    if rs and 'resultadosFolio911' in rs:
+        for f in rs['resultadosFolio911']:
+            texto += f'*Folio:* {f["folio"]}\n*Municipio:* {f["Municipio"]}\n*Fecha:* {f["Fecha"]}\n*Incidente:* f["Incidente"]'
+    else:
+        texto += '*NO SE ENCONRO EL FOLIO PROPORCIONADO FAVO DE VERIFICARLO*'
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
         data = {
@@ -175,7 +181,7 @@ def cons_folio911(folio, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": rs if rs else 'NO SE HA ENCONTRADO EL FOLIO FAVOR DE VALIDARLO'
+                "body": texto
             }
         }
             #Convertir el diccionario a formato json
