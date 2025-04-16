@@ -172,7 +172,7 @@ def cons_folio911(folio, numero):
             print(fol, flush=True)
             texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* {fol["Tipo_incidente"]}'
     else:
-        texto += '*NO SE ENCONTRO EL FOLIO PROPORCIONADO FAVOR DE VERIFICARLO*'
+        texto += '*NO SE ENCONTRO EL FOLIO FAVOR DE VERIFICARLO*'
     print(texto, flush=True)
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
