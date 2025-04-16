@@ -174,9 +174,6 @@ def respuesta(resultado_busqueda):
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
-
-
-    
     if resultado_busqueda and "resultados_ine1" in resultado_busqueda:
         cadena = cadena + "*INE BD1 MORELOS*\n"
         resultadosINE = resultado_busqueda['resultados_ine1']
@@ -367,4 +364,16 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
+    
+    if resultado_busqueda and "vehiculo_portable_repuve" in resultado_busqueda:
+        cadena = cadena + "*VEHICULO REPUVE PORTABLE*\n"
+        resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
+        if resultadosRepPort:
+            for obj in resultadosRepPort:
+                cadena = cadena + "PLACA: " +str(obj["placa"]) + "\n"
+                cadena = cadena + "SERIE: " + str(obj["serie"]) + "\n"
+                cadena = cadena + "AVERIGUACION: " + str(obj["averiguacion"]) + "\n\n"
+        else:
+            cadena = cadena + "SIN INFORMACIÓN\n\n"
+    
     return cadena

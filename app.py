@@ -22,6 +22,7 @@ urls = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda5/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda8/v1/'
 ]
 
 logging.basicConfig(level=logging.DEBUG)
