@@ -166,11 +166,11 @@ def cons_folio911(folio, numero):
     }
     rs = consulta_api('https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/', datos)
     print(rs, flush=True)
-    texto = f'*Folio 911: {folio}*\n'
+    texto = f'*Folio 911 - {folio}*\n'
     if rs and 'resultadosFolio911' in rs:
         for fol in rs['resultadosFolio911']:
             print(fol, flush=True)
-            texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* fol["Tipo_incidente"]'
+            texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"].strftime("%d/%m/%Y")}\n*Incidente:* {fol["Tipo_incidente"]}'
     else:
         texto += '*NO SE ENCONTRO EL FOLIO PROPORCIONADO FAVOR DE VERIFICARLO*'
     print(texto, flush=True)
@@ -197,15 +197,11 @@ def cons_folio911(folio, numero):
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
             print(response.read().decode(), flush=True)
-        return jsonify({'message': 'EVENT_RECEIVED'})
     except Exception as e:
         print(f"Error en {url}: {e}", flush=True)
-        return jsonify({'message': 'EVENT_RECEIVED'})
     finally:
         connection.close()
-        return jsonify({'message': 'EVENT_RECEIVED'})
     otra_consulta(numero)
-    return jsonify({'message': 'EVENT_RECEIVED'})
 
 def mensaje(numero, mensaje):
     print(numero, flush=True)
