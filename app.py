@@ -12,7 +12,7 @@ app = Flask(__name__)
 white_list = ['525650835953','527777877176','527775006263', '527771495695', '522291881930']
 
 user_states = {}  # Diccionario: {numero: estado}
-
+auth = 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
 # Lista de URLs a consultar
 urls = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/',
@@ -99,7 +99,53 @@ def menu(numero):
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+        'Authorization': auth
+    }
+
+    data = json.dumps(data)
+
+    if numero in white_list:
+        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+        response = connection.getresponse()
+        print(response.read().decode(), flush=True)
+    connection.close()
+
+def otra_consulta(numero):
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+
+    data = {
+        "messaging_product": "whatsapp",
+        "to": numero,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": "¿Deseas realizar otra consulta?"
+            },
+            "action": {
+                "buttons": [
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "otra_si",
+                            "title": "Si"
+                        }
+                    },
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "otra_no",
+                            "title": "No"
+                        }
+                    },
+                ]
+            }
+        }
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': auth
     }
 
     data = json.dumps(data)
@@ -113,13 +159,8 @@ def menu(numero):
 def cons_folio911(folio, numero):
     ...
 
-def respuestas(rs_id, numero):
-    connection = http.client.HTTPSConnection('graph.facebook.com')
-
-    if rs_id == 'cons_folio':
-        ...
-    elif rs_id == 'cons_nomb':
-        user_states[numero] = 'esperando_nombre'
+def mensaje(numero, mensaje):
+    try:
         data = {
             "messaging_product": "whatsapp",    
             "recipient_type": "individual",
@@ -127,21 +168,36 @@ def respuestas(rs_id, numero):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": 'Introduce el nombre a buscar'
+                "body": mensaje
             }
         }
-        #Convertir el diccionario a formato json
+            #Convertir el diccionario a formato json
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+            'Authorization': auth
         }
         data = json.dumps(data)
         
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
+    except Exception as e:
+        print(f"Error en {url}: {e}", flush=True)
+    finally:
         connection.close()
-        
+
+def respuestas(rs_id, numero):
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+
+    if rs_id == 'cons_folio':
+        ...
+    elif rs_id == 'cons_nomb':
+        user_states[numero] = 'esperando_nombre'
+        mensaje(numero, 'Introduce el nombre a buscar')
+    elif rs_id == 'otra_si':
+        menu(numero)
+    elif rs_id == 'otra_no':
+        mensaje(numero, 'Gracias por utilizar el bot!...')
         #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])
@@ -240,7 +296,7 @@ def enviar_mensaje(texto, numero):
                     
                     headers = {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
+                        'Authorization': auth
                     }
                     if numero in white_list:
                         connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
@@ -249,6 +305,7 @@ def enviar_mensaje(texto, numero):
                 print(f"Error en {url}: {e}", flush=True)
             finally:
                 connection.close()
-        
+    otra_consulta(numero)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
