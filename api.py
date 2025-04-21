@@ -372,7 +372,7 @@ def respuesta(resultado_busqueda):
             for obj in resultadosRepPort:
                 cadena += f'''PLACA: str({obj["placa"]})
                 SERIE: str({obj["serie"]})
-                AVERIGIACIÓN: str({obj["averigiacion"]})\n\n'''
+                AVERIGIACIÓN: str({obj["averiguacion"]})\n\n'''
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
