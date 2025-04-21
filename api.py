@@ -370,9 +370,9 @@ def respuesta(resultado_busqueda):
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
         if resultadosRepPort:
             for obj in resultadosRepPort:
-                cadena += f'''PLACA: str({obj["placa"]})
-                SERIE: str({obj["serie"]})
-                AVERIGIACIÓN: str({obj["averiguacion"]})\n\n'''
+                cadena += (f'PLACA: {obj["placa"]}\n'
+                f'SERIE: {obj["serie"]}\n'
+                f'AVERIGIACIÓN: {obj["averiguacion"]}\n\n')
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
