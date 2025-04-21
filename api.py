@@ -364,7 +364,7 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
-        
+    
     if resultado_busqueda and "vehiculo_portable_repuve" in resultado_busqueda:
         cadena += "*VEHICULO REPUVE PORTABLE*\n"
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
@@ -377,7 +377,7 @@ def respuesta(resultado_busqueda):
             cadena += "SIN INFORMACIÓN\n\n"
     
     if resultado_busqueda and 'vehiculo_robo_vehiculo' in resultado_busqueda:
-        cadena = cadena + "*VEHICULO OCRA*\n"
+        cadena += "*VEHICULO OCRA*\n"
         resultadosOcra = resultado_busqueda["vehiculo_robo_vehiculo"]
         if resultadosOcra:
             for obj in resultadosOcra:

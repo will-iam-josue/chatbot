@@ -251,13 +251,13 @@ def mensaje(numero, mensaje):
 def respuestas(rs_id, numero):
     if rs_id == 'cons_folio':
         user_states[numero] = 'esperando_folio'
-        mensaje(numero, '*Introduce el folio de 911 a consultar*')
+        mensaje(numero, '*Introduce el folio de 911 a consultar:*')
     elif rs_id == 'cons_nomb':
         user_states[numero] = 'esperando_nombre'
-        mensaje(numero, '*Introduce el nombre a consultar*')
+        mensaje(numero, '*Introduce el nombre a consultar:*')
     elif rs_id == 'cons_placa':
         user_states[numero] = 'esperando_placa'
-        mensaje(numero, '*Introduce placa a consultar*')
+        mensaje(numero, '*Introduce placa a consultar:*')
     elif rs_id == 'otra_si':
         menu(numero)
     elif rs_id == 'otra_no':
@@ -339,6 +339,9 @@ def enviar_mensaje(texto, numero, urls):
         "busqueda": texto,
         "req": "req"
     }
+    print(texto, flush=True)
+    print(numero, flush=True)
+    print(urls, flush=True)
     # Crear un ejecutor de hilos
     with ThreadPoolExecutor() as executor:
         # Enviar las tareas al executor
