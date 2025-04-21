@@ -370,9 +370,9 @@ def respuesta(resultado_busqueda):
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
         if resultadosRepPort:
             for obj in resultadosRepPort:
-                cadena += (f'PLACA: {obj["placa"]}\n'
-                f'SERIE: {obj["serie"]}\n'
-                f'AVERIGIACIÓN: {obj["averiguacion"]}\n\n')
+                cadena += (f'*PLACA:* {obj["placa"]}'
+                f'*SERIE:* {obj["serie"]}'
+                f'*AVERIGIACIÓN:* {obj["averiguacion"]}\n\n')
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
@@ -381,18 +381,18 @@ def respuesta(resultado_busqueda):
         resultadosOcra = resultado_busqueda["vehiculo_robo_vehiculo"]
         if resultadosOcra:
             for obj in resultadosOcra:
-                cadena = cadena + "*NÚMERO SERIE:* " + str(obj["numero_serie"]) + "\n"
-                cadena = cadena + "*NÚMERO MOTOR:* " + str(obj["numero_motor"]) + "\n"
-                cadena = cadena + "*PLACA:* " + str(obj["placa"]) + "\n"
-                cadena = cadena + "*MARCA:* " + str(obj["marca"]) + "\n"
-                cadena = cadena + "*TIPO:* " + str(obj["tipo"]) + "\n"
-                cadena = cadena + "*MODELO:* " + str(obj["modelo"]) + "\n"
-                cadena = cadena + "*COLOR:* " + str(obj["color"]) + "\n"
-                cadena = cadena + "*FECHA ROBO:* " + str(obj["fecha_robo"]) + "\n"
-                cadena = cadena + "*ESTADO:* " + str(obj["estado"]) + "\n"
-                cadena = cadena + "*MUNICIPIO:* " + str(obj["municipio"]) + "\n"
-                cadena = cadena + "*ACTA ROBO:* " + str(obj["acta_robo"]) + "\n"
-                cadena = cadena + "*FECHA CARGA:* " + str(obj["fecha_carga"]) + "\n\n"
+                cadena += (f'*NÚMERO SERIE:* {obj["numero_serie"]}'
+                f'*NÚMERO MOTOR:* obj["numero_motor"]'
+                f'*PLACA:* obj["placa"])'
+                f'*MARCA:* obj["marca"]'
+                f'*TIPO:* obj["tipo"]'
+                f'*MODELO:* obj["modelo"]'
+                f'*COLOR:* obj["color"]'
+                f'*FECHA ROBO:* obj["fecha_robo"]'
+                f'*ESTADO:* obj["estado"]'
+                f'*MUNICIPIO:* obj["municipio"]'
+                f'*ACTA ROBO:* obj["acta_robo"]'
+                f'*FECHA CARGA:* obj["fecha_carga"]\n\n')
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     return cadena
