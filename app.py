@@ -29,6 +29,10 @@ placa = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda9/v1/'
 ]
 
+folio = [
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/'
+]
+
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///log.db'
@@ -169,7 +173,7 @@ def otra_consulta(numero):
     connection.close()
     return jsonify({'message': 'EVENT_RECEIVED'})
 
-def cons_folio911(folio, numero):
+''' def cons_folio911(folio, numero):
     print(folio, flush=True)
     print(numero, flush=True)
     datos = {
@@ -184,8 +188,7 @@ def cons_folio911(folio, numero):
             print(fol, flush=True)
             texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* {fol["Tipo_incidente"]}'
     else:
-        texto += '*NO SE ENCONTRO EL FOLIO FAVOR DE VERIFICARLO*'
-    print(texto, flush=True)
+        texto += 'SIN INFORMACIÓN'
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
         data = {
@@ -204,7 +207,6 @@ def cons_folio911(folio, numero):
             'Authorization': auth
         }
         data = json.dumps(data)
-        print(data, flush=True)
         if numero in white_list:
             connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
             response = connection.getresponse()
@@ -213,11 +215,9 @@ def cons_folio911(folio, numero):
         print(f"Error en {url}: {e}", flush=True)
     finally:
         connection.close()
-    otra_consulta(numero)
+    otra_consulta(numero) '''
 
 def mensaje(numero, mensaje):
-    print(numero, flush=True)
-    print(mensaje, flush=True)
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
         data = {
@@ -304,22 +304,19 @@ def recibir_mensaje(req):
 
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
-                        print(res, flush=True)
                         respuestas(res, numero)
                     
                 if 'text' in message:
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
-                    
                     estado = user_states.get(numero)
-                    print(estado, flush=True)
                     if estado == 'esperando_nombre':
                         user_states.pop(numero, None)
                         enviar_mensaje(texto, numero, nombre)
                     elif estado == 'esperando_folio':
                         user_states.pop(numero, None)
-                        cons_folio911(texto, numero)
+                        enviar_mensaje(texto, numero, folio)
                     elif estado == 'esperando_placa':
                         user_states.pop(numero, None)
                         enviar_mensaje(texto, numero, placa)
@@ -339,9 +336,6 @@ def enviar_mensaje(texto, numero, urls):
         "busqueda": texto,
         "req": "req"
     }
-    print(texto, flush=True)
-    print(numero, flush=True)
-    print(urls, flush=True)
     # Crear un ejecutor de hilos
     with ThreadPoolExecutor() as executor:
         # Enviar las tareas al executor
