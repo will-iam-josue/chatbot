@@ -370,8 +370,8 @@ def respuesta(resultado_busqueda):
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
         if resultadosRepPort:
             for obj in resultadosRepPort:
-                cadena += (f'*PLACA:* {obj["placa"]}'
-                f'*SERIE:* {obj["serie"]}'
+                cadena += (f'*PLACA:* {obj["placa"]}\n'
+                f'*SERIE:* {obj["serie"]}\n'
                 f'*AVERIGUACIÓN:* {obj["averiguacion"]}\n\n')
         else:
             cadena += "SIN INFORMACIÓN\n\n"
@@ -381,18 +381,18 @@ def respuesta(resultado_busqueda):
         resultadosOcra = resultado_busqueda["vehiculo_robo_vehiculo"]
         if resultadosOcra:
             for obj in resultadosOcra:
-                cadena += f'''*NÚMERO SERIE:* {obj["numero_serie"]}
-            *NÚMERO MOTOR:* {obj["numero_motor"]}
-            *PLACA:* {obj["placa"]}
-            *MARCA:* {obj["marca"]}
-            *TIPO:* {obj["tipo"]}
-            *MODELO:* {obj["modelo"]}
-            *COLOR:* {obj["color"]}
-            *FECHA ROBO:* {obj["fecha_robo"]}
-            *ESTADO:* {obj["estado"]}
-            *MUNICIPIO:* {obj["municipio"]}
-            *ACTA ROBO:* {obj["acta_robo"]}
-            *FECHA CARGA:* {obj["fecha_carga"]}\n\n'''
+                cadena += (f'*NÚMERO SERIE:* {obj["numero_serie"]}\n'
+                    f'*NÚMERO MOTOR:* {obj["numero_motor"]}\n'
+                    f'*PLACA:* {obj["placa"]}\n'
+                    f' *MARCA:* {obj["marca"]}\n'
+                    f'*TIPO:* {obj["tipo"]}\n'
+                    f' *MODELO:* {obj["modelo"]}\n'
+                    f'*COLOR:* {obj["color"]}\n'
+                    f'*FECHA ROBO:* {obj["fecha_robo"]}\n'
+                    f'*ESTADO:* {obj["estado"]}\n'
+                    f'*MUNICIPIO:* {obj["municipio"]}\n'
+                    f'*ACTA ROBO:* {obj["acta_robo"]}\n'
+                    f'*FECHA CARGA:* {obj["fecha_carga"]}\n\n')
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     return cadena
