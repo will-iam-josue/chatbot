@@ -364,17 +364,21 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
+    return cadena
+
+def placa(resultados_busqueda):
+    cadena = ""
     
     if resultado_busqueda and "vehiculo_portable_repuve" in resultado_busqueda:
-        cadena = cadena + "*VEHICULO REPUVE PORTABLE*\n"
+        cadena += "*VEHICULO REPUVE PORTABLE*\n"
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
         if resultadosRepPort:
             for obj in resultadosRepPort:
-                cadena = cadena + "PLACA: " +str(obj["placa"]) + "\n"
-                cadena = cadena + "SERIE: " + str(obj["serie"]) + "\n"
-                cadena = cadena + "AVERIGUACION: " + str(obj["averiguacion"]) + "\n\n"
+                cadena += f'''PLACA: str({obj["placa"]})
+                SERIE: str({obj["serie"]})
+                AVERIGIACIÓN: str({obj["averigiacion"]})\n\n'''
         else:
-            cadena = cadena + "SIN INFORMACIÓN\n\n"
+            cadena += "SIN INFORMACIÓN\n\n"
     
     if resultado_busqueda and 'vehiculo_robo_vehiculo' in resultado_busqueda:
         cadena = cadena + "*VEHICULO OCRA*\n"
@@ -394,5 +398,4 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "*ACTA ROBO:* " + str(obj["acta_robo"]) + "\n"
                 cadena = cadena + "*FECHA CARGA:* " + str(obj["fecha_carga"]) + "\n\n"
         else:
-            cadena = cadena + "SIN INFORMACIÓN\n\n"
-    return cadena
+            cadena += "SIN INFORMACIÓN\n\n"

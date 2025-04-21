@@ -14,7 +14,7 @@ white_list = ['525650835953','527777877176','527775006263', '527771495695', '522
 user_states = {}  # Diccionario: {numero: estado}
 auth = 'Bearer EAAEe3rnxKxABO1r6it9z8PC1BZBGl9tEX88gasU7vPlmXin4bL9yrPjzNWLeq1wjjGuO8jGgyXSNPTliApNDvZBK8qOvR1BdNvtVbnSCdfDN6GZBF00GB1UQHSvLkOSxiK5GA9Cs4D6mdX9HMwmemkRPczY4aC9QAkrWAaCQjrNr3egZAEuIgi1W8w2ZCZBHo4AgZDZD'
 # Lista de URLs a consultar
-urls = [
+nombre = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda2/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda3/v1/',
@@ -22,6 +22,9 @@ urls = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda5/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
+]
+
+placa = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda8/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda9/v1/'
 ]
@@ -92,6 +95,13 @@ def menu(numero):
                         "reply": {
                             "id": "cons_nomb",
                             "title": "Busqueda nombre"
+                        }
+                    },
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "cons_placa",
+                            "title": "Placa robada"
                         }
                     },
                 ]
@@ -244,7 +254,10 @@ def respuestas(rs_id, numero):
         mensaje(numero, '*Introduce el folio de 911 a consultar*')
     elif rs_id == 'cons_nomb':
         user_states[numero] = 'esperando_nombre'
-        mensaje(numero, '*Introduce el nombre a buscar*')
+        mensaje(numero, '*Introduce el nombre a consultar*')
+    elif rs_id == 'cons_placa':
+        user_states[numero] = 'esperando_placa'
+        mensaje(numero, '*Introduce placa a consultar*')
     elif rs_id == 'otra_si':
         menu(numero)
     elif rs_id == 'otra_no':
@@ -303,10 +316,13 @@ def recibir_mensaje(req):
                     print(estado, flush=True)
                     if estado == 'esperando_nombre':
                         user_states.pop(numero, None)
-                        enviar_mensaje(texto, numero)
+                        enviar_mensaje(texto, numero, nombre)
                     elif estado == 'esperando_folio':
                         user_states.pop(numero, None)
                         cons_folio911(texto, numero)
+                    elif estado == 'esperando_placa':
+                        user_states.pop(numero, None)
+                        enviar_mensaje(texto, numero, placa)
                     elif texto.lower() in['hola', 'menu', 'inicio', 'empezar', 'buenas']:
                         menu(numero)
                     else:
@@ -316,7 +332,7 @@ def recibir_mensaje(req):
     except Exception as e:
         return json.dumps({'message': 'EVENT_RECEIVED'})
 
-def enviar_mensaje(texto, numero):
+def enviar_mensaje(texto, numero, urls):
     texto = texto.lower()
     # Datos comunes para todas las solicitudes
     datos = {
