@@ -1,5 +1,7 @@
+import os
 import json
 import logging
+import requests
 import http.client
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -72,6 +74,31 @@ def add_log_message(texto):
 
 #Token de verificacion para la configuracion
 TOKEN_VERIFY = 'Shinnosuke_6654*'
+
+def descargar_imagen(med_id):
+    phone_id = '524788164041717'
+
+    url = f'https://graph.facebook.com/v21.0/{med_id}'
+    headers = {
+        "Authorization": auth
+    }
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    download_url = response.json()['url']
+    
+    response = requests.get(download_url, headers=headers)
+    response.raise_for_status()
+
+    folder = 'img'
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    
+    path_file = os.path.join(folder, f'{media_id}.jpg')
+    with open(path_file, 'wb') as f:
+        f.write(response.content)
+        print(response.content,flush=True)
+    
+    return path_file
 
 def menu(numero):
     connection = http.client.HTTPSConnection('graph.facebook.com')
@@ -305,7 +332,20 @@ def recibir_mensaje(req):
                     if msg_type == 'button_reply':
                         res = message['interactive']['button_reply']['id']
                         respuestas(res, numero)
+                
+                if tipo == 'image':
+                    numero = message['from']
+                    numero = f'{numero[0:2]}{numero[3:]}'
+
+                    image_id = message['image']['id']
+                    caption = message['image'].get('caption', '')
                     
+                    # Aquí puedes guardar el ID o proceder a descargar la imagen
+                    print(f"Recibí una imagen del número {numero}, ID: {image_id}, Caption: {caption}", flush=True)
+                    
+                    # Opcional: responder algo
+                    enviar_texto(numero, "Gracias por enviarnos tu imagen 📷.")
+                
                 if 'text' in message:
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
