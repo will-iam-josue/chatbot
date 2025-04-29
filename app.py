@@ -95,7 +95,7 @@ def descargar_imagen(med_id):
     if not os.path.exists(folder):
         os.makedirs(folder)
     
-    path_file = os.path.join(folder, f'{media_id}.jpg')
+    path_file = os.path.join(folder, f'{med_id}.jpg')
     with open(path_file, 'wb') as f:
         f.write(response.content)
         print(response.content,flush=True)
