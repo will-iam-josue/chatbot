@@ -3,9 +3,11 @@ import json
 import logging
 import requests
 import http.client
+import pytesseract
+from PIL import Image
+from sqlalchemy import text
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from api import SecureAPIClient, consulta_api, respuesta
 from flask import Flask, render_template, request, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -99,6 +101,15 @@ def descargar_imagen(med_id):
         print(response.content,flush=True)
     
     return path_file
+
+def extraer_texto(ruta_imagen):
+    try:
+        imagen = Image.open(ruta_imagen)
+        texto = pytesseract.image_to_string(imagen, lang='spa')  # 'spa' para español
+        return texto.strip()
+    except Exception as e:
+        print(f"❌ Error en OCR: {e}", flush=True)
+        return None
 
 def menu(numero):
     connection = http.client.HTTPSConnection('graph.facebook.com')
@@ -343,8 +354,19 @@ def recibir_mensaje(req):
                     # Aquí puedes guardar el ID o proceder a descargar la imagen
                     print(f"Recibí una imagen del número {numero}, ID: {image_id}, Caption: {caption}", flush=True)
                     user_states.pop(numero, None)
+                    try:
+                        file_saved = descargar_imagen(image_id)
+                        texto = extraer_texto(file_saved)
+                        
+                        if texto:
+                            mensaje(numero, f'Se ha extraido el siguiente texto de la imagen: {texto}')
+                        else:
+                            mensaje(numero, ' No se pudo reconocer el texto de la imagen intenta enviar una mas clara')
+                    except Exception as e:
+                        print(f'Error al procesar la imagen: {e}', flush=True)
+                        mensaje(numero, 'Se tuvo problema al procesar la imagen intenta con otra por favor')
                     # Opcional: responder algo
-                    mensaje( numero, "Gracias por enviarnos tu imagen 📷.")
+                    #mensaje(numero, "Gracias por enviarnos tu imagen 📷.")
                 
                 if 'text' in message:
                     numero = message['from']
