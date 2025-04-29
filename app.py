@@ -344,7 +344,7 @@ def recibir_mensaje(req):
                     print(f"Recibí una imagen del número {numero}, ID: {image_id}, Caption: {caption}", flush=True)
                     user_states.pop(numero, None)
                     # Opcional: responder algo
-                    enviar_texto("Gracias por enviarnos tu imagen 📷.", numero)
+                    mensaje( numero, "Gracias por enviarnos tu imagen 📷.")
                 
                 if 'text' in message:
                     numero = message['from']
