@@ -23,7 +23,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Exponemos el puerto que usará Gunicorn
-EXPOSE 8000
+EXPOSE 80
 
 # Comando para arrancar la app con Gunicorn
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:80"]
