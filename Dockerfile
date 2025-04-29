@@ -2,18 +2,22 @@
 FROM python:3.11-slim
 
 # Instalamos Tesseract y dependencias necesarias
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
     tesseract-ocr \
     libtesseract-dev \
     libleptonica-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
 # Copiamos todos los archivos de tu proyecto al contenedor
 COPY . .
+
+# Actualizamos pip
+RUN pip install --upgrade pip
 
 # Instalamos las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
