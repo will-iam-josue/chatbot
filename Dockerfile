@@ -29,7 +29,7 @@ COPY render.yaml /chatbot/
 COPY requirements.txt /chatbot/
 
 # Actualizamos pip
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 
 # Instalamos las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
