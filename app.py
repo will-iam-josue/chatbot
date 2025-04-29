@@ -102,6 +102,8 @@ def descargar_imagen(med_id):
     
     return path_file
 
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
 def extraer_texto(ruta_imagen):
     try:
         imagen = Image.open(ruta_imagen)
