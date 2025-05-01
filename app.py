@@ -213,50 +213,6 @@ def otra_consulta(numero):
     connection.close()
     return jsonify({'message': 'EVENT_RECEIVED'})
 
-''' def cons_folio911(folio, numero):
-    print(folio, flush=True)
-    print(numero, flush=True)
-    datos = {
-        "busqueda": folio,
-        "req": "req"
-    }
-    rs = consulta_api('https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/', datos)
-    print(rs, flush=True)
-    texto = f'*Folio 911 - {folio}*\n'
-    if rs and rs['resultadosFolio911']:
-        for fol in rs['resultadosFolio911']:
-            print(fol, flush=True)
-            texto += f'*Folio:* {fol["Folio"]}\n*Municipio:* {fol["Municipio"]}\n*Fecha:* {fol["Fecha"]}\n*Incidente:* {fol["Tipo_incidente"]}'
-    else:
-        texto += 'SIN INFORMACIÓN'
-    try:
-        connection = http.client.HTTPSConnection('graph.facebook.com')
-        data = {
-            "messaging_product": "whatsapp",    
-            "recipient_type": "individual",
-            "to": numero,
-            "type": "text",
-            "text": {
-                "preview_url": False,
-                "body": texto
-            }
-        }
-            #Convertir el diccionario a formato json
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': auth
-        }
-        data = json.dumps(data)
-        if numero in white_list:
-            connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
-            response = connection.getresponse()
-            print(response.read().decode(), flush=True)
-    except Exception as e:
-        print(f"Error en {url}: {e}", flush=True)
-    finally:
-        connection.close()
-    otra_consulta(numero) '''
-
 def mensaje(numero, mensaje):
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
@@ -367,8 +323,6 @@ def recibir_mensaje(req):
                     except Exception as e:
                         print(f'Error al procesar la imagen: {e}', flush=True)
                         mensaje(numero, 'Se tuvo problema al procesar la imagen intenta con otra por favor')
-                    # Opcional: responder algo
-                    #mensaje(numero, "Gracias por enviarnos tu imagen 📷.")
                 
                 if 'text' in message:
                     numero = message['from']

@@ -3,6 +3,8 @@ services:
     name: chatbot
     env: docker
     plan: free
+    build:
+      dockerfilePath: Dockerfile
     envVars:
       - key: PORT
         value: 8000
