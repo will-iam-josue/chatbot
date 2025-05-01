@@ -3,8 +3,7 @@ services:
     name: chatbot
     env: docker
     plan: free
-    build:
-      dockerfilePath: Dockerfile
+    image: martekzito/chatbot:latest
     envVars:
       - key: PORT
         value: 8000
