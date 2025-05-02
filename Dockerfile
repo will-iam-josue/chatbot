@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     tesseract-ocr \
+    tesseract-ocr-spa \
     libtesseract-dev \
     libleptonica-dev \
     && apt-get clean \
