@@ -108,7 +108,7 @@ pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 def extraer_texto(ruta_imagen):
     try:
         imagen = Image.open(ruta_imagen)
-        texto = pytesseract.image_to_string(imagen, lang='spa')  # 'spa' para español
+        texto = pytesseract.image_to_string(imagen, lang='eng')  # 'spa' para español
         print(texto, flush=True)
         return texto.strip()
     except Exception as e:
