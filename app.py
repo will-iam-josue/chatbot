@@ -1,4 +1,5 @@
 import os
+import cv2
 import json
 import logging
 import requests
@@ -36,6 +37,8 @@ placa = [
 folio = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busquedafolio/911/'
 ]
+
+custom_config = r'--oem 3 --psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' #Configuración para Tesseract par ael OCR
 
 logging.basicConfig(level=logging.DEBUG)
 #Configuración de la Base de Datos SQLite
@@ -105,10 +108,18 @@ def descargar_imagen(med_id):
 
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
+def preproccess_image(path):
+    img = cv2.imread(path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.bilateralFilter(gray, 11, 17, 17)
+    edge = cv2.Canny(gray, 30, 200)
+    _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    return Image.fromarray(thresh)
+
 def extraer_texto(ruta_imagen):
     try:
-        imagen = Image.open(ruta_imagen)
-        texto = pytesseract.image_to_string(imagen, lang='eng')  # 'spa' para español
+        imagen = preproccess_image(ruta_imagen)
+        texto = pytesseract.image_to_string(imagen, lang='eng')  # 'eng' para placas
         print(texto, flush=True)
         return texto.strip()
     except Exception as e:
