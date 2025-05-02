@@ -114,12 +114,14 @@ def preproccess_image(path):
     gray = cv2.bilateralFilter(gray, 11, 17, 17)
     edge = cv2.Canny(gray, 30, 200)
     _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
-    return Image.fromarray(thresh)
+    print(thresh, flush=True)
+    return thresh
 
 def extraer_texto(ruta_imagen):
     try:
         imagen = preproccess_image(ruta_imagen)
-        texto = pytesseract.image_to_string(imagen,config=custom_config, lang='eng')  # 'eng' para placas
+        print(imagen, flush=True)
+        texto = pytesseract.image_to_string(imagen, config=custom_config, lang='eng')  # 'eng' para placas
         print(texto, flush=True)
         return texto.strip()
     except Exception as e:
