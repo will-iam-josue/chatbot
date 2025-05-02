@@ -6,4 +6,4 @@ services:
     image: martekzito/chatbot:latest
     envVars:
       - key: PORT
-        value: 80
+        value: 8000
