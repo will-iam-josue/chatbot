@@ -112,7 +112,7 @@ def preproccess_image(path):
     img = cv2.imread(path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.bilateralFilter(gray, 11, 17, 17)
-    edge = cv2.Canny(gray, 30, 200)
+    #edge = cv2.Canny(gray, 30, 200)
     _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
     print(thresh, flush=True)
     return thresh
