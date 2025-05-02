@@ -78,6 +78,7 @@ def add_log_message(texto):
 TOKEN_VERIFY = 'Shinnosuke_6654*'
 
 def descargar_imagen(med_id):
+    print(med_id, flush=True)
     phone_id = '524788164041717'
 
     url = f'https://graph.facebook.com/v21.0/{med_id}'
@@ -114,6 +115,7 @@ def extraer_texto(ruta_imagen):
         return None
 
 def menu(numero):
+    print(numero, flush=True)
     connection = http.client.HTTPSConnection('graph.facebook.com')
 
     data = {
@@ -214,6 +216,8 @@ def otra_consulta(numero):
     return jsonify({'message': 'EVENT_RECEIVED'})
 
 def mensaje(numero, mensaje):
+    print(numero, flush=True)
+    print(mensaje, flush=True)
     try:
         connection = http.client.HTTPSConnection('graph.facebook.com')
         data = {
@@ -293,6 +297,7 @@ def recibir_mensaje(req):
             if 'type' in message:
                 
                 tipo = message['type']
+                print(tipo, flush=True)
                 if tipo == 'interactive':
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
@@ -329,6 +334,9 @@ def recibir_mensaje(req):
                     numero = f'{numero[0:2]}{numero[3:]}'
                     texto = message['text']['body']
                     estado = user_states.get(numero)
+                    print(numero, flush=True)
+                    print(texto, flush=True)
+                    print(estado, flush=True)
                     if estado == 'esperando_nombre':
                         user_states.pop(numero, None)
                         enviar_mensaje(texto, numero, nombre)
@@ -348,6 +356,9 @@ def recibir_mensaje(req):
         return json.dumps({'message': 'EVENT_RECEIVED'})
 
 def enviar_mensaje(texto, numero, urls):
+    print(texto, flush=True)
+    print(numero, flush=True)
+    print(urls, flush=True)
     texto = texto.lower()
     # Datos comunes para todas las solicitudes
     datos = {
