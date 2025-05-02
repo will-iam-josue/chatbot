@@ -109,6 +109,7 @@ def extraer_texto(ruta_imagen):
     try:
         imagen = Image.open(ruta_imagen)
         texto = pytesseract.image_to_string(imagen, lang='spa')  # 'spa' para español
+        print(texto, flush=True)
         return texto.strip()
     except Exception as e:
         print(f"❌ Error en OCR: {e}", flush=True)
