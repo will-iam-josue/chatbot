@@ -419,7 +419,7 @@ def respuesta(resultado_busqueda):
                     f'*NO. IPH:* {obj["numero_iph"]}\n',
                     f'*FECHA DEL EVENTO:* {obj["fecha_evento"]}\n',
                     f'*CORPORACIÓN APREHENSIÓN:* {obj["corp_apre"]}\n',
-                    f'*MOTIVO DETENCIÓN:* {obj["motivo"]}\n',
+                    f'*MOTIVO DETENCIÓN:* {obj["motivo_det"]}\n',
                     f'*DESCRIPCIÓN DE LOS HECHOS:* {obj["descripcion_echos"]}\n',
                 )
         else:
