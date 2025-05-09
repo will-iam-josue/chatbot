@@ -405,7 +405,7 @@ def respuesta(resultado_busqueda):
                     f'*NOMBRE DETENIDO:* {obj["nombre_det"]}\n',
                     f'*APELLIDO PATERNO DETENIDO:* {obj["primer_apel_det"]}\n',
                     f'*APELLIDO MATERNO DETENIDO:* {obj["segundo_apel_det"]}\n',
-                    f'*FECHA DE NACIMIENTO:* {obj["fecha_nacmiento_det"]}\n',
+                    f'*FECHA DE NACIMIENTO:* {obj["fecha_nacimiento_det"]}\n',
                     f'*EDAD:* {obj["edad"]}\n',
                     f'*GENERO:* {obj["genero"]}\n',
                     f'*ALIAS:* {obj["alias"]}\n',
