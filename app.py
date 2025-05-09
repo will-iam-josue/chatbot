@@ -27,6 +27,7 @@ nombre = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda5/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda10/v1/',
 ]
 
 placa = [
