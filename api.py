@@ -420,7 +420,7 @@ def respuesta(resultado_busqueda):
                     f'*FECHA DEL EVENTO:* {obj["fecha_evento"]}\n'
                     f'*CORPORACIÓN APREHENSIÓN:* {obj["corp_apre"]}\n'
                     f'*MOTIVO DETENCIÓN:* {obj["motivo_det"]}\n'
-                    f'*DESCRIPCIÓN DE LOS HECHOS:* {obj["descripcion_echos"]}\n'
+                    f'*DESCRIPCIÓN DE LOS HECHOS:* {obj["descripcion_echos"]}\n\n'
                 )
         else:
             cadena += 'SIN INFORMACIÓN'
