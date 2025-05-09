@@ -402,25 +402,25 @@ def respuesta(resultado_busqueda):
         if resultadoEfDetenidos:
             for obj in resultadoEfDetenidos:
                 cadena += (f'*FOLIO:* {obj["folio"]}\n'
-                    f'*NOMBRE DETENIDO:* {obj["nombre_det"]}\n',
-                    f'*APELLIDO PATERNO DETENIDO:* {obj["primer_apel_det"]}\n',
-                    f'*APELLIDO MATERNO DETENIDO:* {obj["segundo_apel_det"]}\n',
-                    f'*FECHA DE NACIMIENTO:* {obj["fecha_nacimiento_det"]}\n',
-                    f'*EDAD:* {obj["edad"]}\n',
-                    f'*GENERO:* {obj["genero"]}\n',
-                    f'*ALIAS:* {obj["alias"]}\n',
-                    f'*OCUPACION:* {obj["ocupacion"]}\n',
-                    f'*LUGAR DEL EVENTO:* {obj["lugar_evento"]}\n',
-                    f'*CALLE DEL EVENTO:* {obj["callle_evento"]}\n',
-                    f'*COLONIA DEL EVENTO:* {obj["colonia_even"]}\n',
-                    f'*MUNICIPIO:* {obj["municipio"]}\n',
-                    f'*NOMBRE REPORTANTE:* {obj["nombre_num_reporte"]}\n',
-                    f'*NO. RND:* {obj["numero_rnd"]}\n',
-                    f'*NO. IPH:* {obj["numero_iph"]}\n',
-                    f'*FECHA DEL EVENTO:* {obj["fecha_evento"]}\n',
-                    f'*CORPORACIÓN APREHENSIÓN:* {obj["corp_apre"]}\n',
-                    f'*MOTIVO DETENCIÓN:* {obj["motivo_det"]}\n',
-                    f'*DESCRIPCIÓN DE LOS HECHOS:* {obj["descripcion_echos"]}\n',
+                    f'*NOMBRE DETENIDO:* {obj["nombre_det"]}\n'
+                    f'*APELLIDO PATERNO DETENIDO:* {obj["primer_apel_det"]}\n'
+                    f'*APELLIDO MATERNO DETENIDO:* {obj["segundo_apel_det"]}\n'
+                    f'*FECHA DE NACIMIENTO:* {obj["fecha_nacimiento_det"]}\n'
+                    f'*EDAD:* {obj["edad"]}\n'
+                    f'*GENERO:* {obj["genero"]}\n'
+                    f'*ALIAS:* {obj["alias"]}\n'
+                    f'*OCUPACION:* {obj["ocupacion"]}\n'
+                    f'*LUGAR DEL EVENTO:* {obj["lugar_evento"]}\n'
+                    f'*CALLE DEL EVENTO:* {obj["callle_evento"]}\n'
+                    f'*COLONIA DEL EVENTO:* {obj["colonia_even"]}\n'
+                    f'*MUNICIPIO:* {obj["municipio"]}\n'
+                    f'*NOMBRE REPORTANTE:* {obj["nombre_num_reporte"]}\n'
+                    f'*NO. RND:* {obj["numero_rnd"]}\n'
+                    f'*NO. IPH:* {obj["numero_iph"]}\n'
+                    f'*FECHA DEL EVENTO:* {obj["fecha_evento"]}\n'
+                    f'*CORPORACIÓN APREHENSIÓN:* {obj["corp_apre"]}\n'
+                    f'*MOTIVO DETENCIÓN:* {obj["motivo_det"]}\n'
+                    f'*DESCRIPCIÓN DE LOS HECHOS:* {obj["descripcion_echos"]}\n'
                 )
         else:
             cadena += 'SIN INFORMACIÓN'
