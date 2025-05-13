@@ -28,6 +28,7 @@ def consulta_api(url, datos):
         return f"Error al consultar {url}: {e}"
 
 def respuesta(resultado_busqueda):
+    print(resultado_busqueda, flush=True)
     cadena = ""
 
     if resultado_busqueda and "resultadosResmor" in resultado_busqueda:
@@ -392,8 +393,9 @@ def respuesta(resultado_busqueda):
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
-    if resultado_busqueda and "resultados_ine1_cdmx1" or "resultados_ine1_cdmx2" in resultado_busqueda:
-        cadena = cadena + "*INE BD1 CDMX*\n"
+    if resultado_busqueda and ("resultados_ine1_cdmx1" or "resultados_ine1_cdmx2") in resultado_busqueda:
+        print(resultado_busqueda, flush=True)
+        cadena += "*INE BD1 CDMX*\n"
         resultadosINECdmx1 = resultado_busqueda['resultados_ine1_cdmx1']
         resultadosINECdmx2 = resultado_busqueda['resultados_ine1_cdmx2']
         resultados = [resultadosINECdmx1, resultadosINECdmx2]
