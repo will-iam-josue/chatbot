@@ -28,6 +28,7 @@ nombre = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda10/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda11/v1/',
 ]
 
 placa = [
@@ -140,7 +141,7 @@ def menu(numero):
         "interactive": {
             "type": "button",
             "body": {
-                "text": "*Hola 👋, ¿qué te gustaría hacer?*"
+                "text": "*Hola Bienvenido👋, ¿Que es lo que te gustaria realizar?*"
             },
             "action": {
                 "buttons": [
@@ -182,6 +183,53 @@ def menu(numero):
         response = connection.getresponse()
         print(response.read().decode(), flush=True)
     connection.close()
+
+def placa_extraida(numero, placa):
+    connection = http.client.HTTPSConnection('graph.facebook.com')
+
+    data = {
+        "messaging_product": "whatsapp",
+        "to": numero,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": f"*La placa extraida es: *{placa}* ¿Es correcta?"
+            },
+            "action": {
+                "buttons": [
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "pla_si",
+                            "title": "Si"
+                        }
+                    },
+                    {
+                        "type": "reply",
+                        "reply": {
+                            "id": "pla_no",
+                            "title": "No"
+                        }
+                    },
+                ]
+            }
+        }
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': auth
+    }
+
+    data = json.dumps(data)
+
+    if numero in white_list:
+        connection.request("POST", '/v21.0/143633982157349/messages', data, headers)
+        response = connection.getresponse()
+        print(response.read().decode(), flush=True)
+    connection.close()
+    return jsonify({'message': 'EVENT_RECEIVED'})
 
 def otra_consulta(numero):
     connection = http.client.HTTPSConnection('graph.facebook.com')
@@ -272,11 +320,14 @@ def respuestas(rs_id, numero):
         mensaje(numero, '*Introduce el nombre a consultar:*')
     elif rs_id == 'cons_placa':
         user_states[numero] = 'esperando_placa'
-        mensaje(numero, '*Introduce placa a consultar:*')
+        mensaje(numero, '*Introduce PLACA, FOTO o IMAGEN de la placa a consultar:*')
     elif rs_id == 'otra_si':
         menu(numero)
     elif rs_id == 'otra_no':
         mensaje(numero, '*Gracias por utilizar el bot!...*')
+    #elif rs_id == 'pla_si':
+        
+        
         #enviar_mensaje(texto, numero)
 
 @app.route('/webhook', methods=['GET', 'POST'])

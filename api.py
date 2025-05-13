@@ -365,6 +365,37 @@ def respuesta(resultado_busqueda):
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
     
+    if resultado_busqueda and "resultados_ine1_puebla" in resultado_busqueda:
+        cadena = cadena + "*INE BD1 PUEBLA*\n"
+        resultadosINE = resultado_busqueda['resultados_ine1_puebla']
+        cantidad = len(resultadosINE)
+        if resultadosINE:
+            if cantidad < 5:
+                for obj in resultadosINE:
+                    cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
+                        f'*ELECTOR:* {obj["ELECTOR"]}\n'
+                        '*CURP:* \n'
+                        f'*CALLE:* {obj["CALLE"]}\n'
+                        f'*NO. INT.:* {obj["NUM_INT"] if obj["NUM_INT"] else ""}\n'
+                        f'*NO. EXT.:* {obj["NUM_EXT"] if obj["NUM_EXT"] else ""}\n'
+                        f'*COLONIA:* {obj["COLONIA"]}\n'
+                        f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
+            else:
+                for i, obj in enumerate(resultadosINE):
+                    if i >= 6:
+                        break
+                    cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
+                    f'*ELECTOR:* {obj["ELECTOR"]}\n'
+                    '*CURP:* \n'
+                    f'*CALLE:* {obj["CALLE"]}\n'
+                    f'*NO. INT.:* {obj["NUM_INT"] if obj["NUM_INT"] else ""}\n'
+                    f'*NO. EXT.:* {obj["NUM_EXT"] if obj["NUM_EXT"] else ""}\n'
+                    f'*COLONIA:* {obj["COLONIA"]}\n'
+                    f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
+                cadena += f'NO ES POSIBLE MOSTRAR LOS {cantidad} REGISTROS DEL INE'
+        else:
+            cadena += "SIN INFORMACIÓN\n\n"
+    
     if resultado_busqueda and "vehiculo_portable_repuve" in resultado_busqueda:
         cadena += "*VEHICULO REPUVE PORTABLE*\n"
         resultadosRepPort = resultado_busqueda['vehiculo_portable_repuve']
