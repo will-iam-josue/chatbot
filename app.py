@@ -28,7 +28,8 @@ nombre = [
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda6/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda7/v1/',
     'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda10/v1/',
-    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda11/v1/',
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda11/v1/', #Puebla
+    'https://resmor.cesmorelos.gob.mx/ef/ojo/api/busqueda12/v1/', #Cdmx
 ]
 
 placa = [

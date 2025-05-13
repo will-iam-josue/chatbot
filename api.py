@@ -79,7 +79,6 @@ def respuesta(resultado_busqueda):
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
-
     if resultado_busqueda and "resultados_ine3" in resultado_busqueda:
         cadena = cadena + "*INE BD3 MORELOS*\n"
         resultadosINE = resultado_busqueda['resultados_ine3']
@@ -221,7 +220,6 @@ def respuesta(resultado_busqueda):
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
-
     if resultado_busqueda and "resultados_ine1_guerrero" in resultado_busqueda:
         cadena = cadena + "*INE BD1 GUERRERO*\n"
         resultadosINE = resultado_busqueda['resultados_ine1_guerrero']
@@ -269,7 +267,6 @@ def respuesta(resultado_busqueda):
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
 
-
     if resultado_busqueda and "resultados_ine2" in resultado_busqueda:
         cadena = cadena + "*INE BD2 MORELOS*\n"
         resultadosINE = resultado_busqueda['resultados_ine2']
@@ -316,7 +313,6 @@ def respuesta(resultado_busqueda):
                 cadena = cadena + "NO ES POSIBLE MOSTRAR LOS " + str(cantidad) + "REGISTROS DEL INE"
         else:
             cadena=cadena+"SIN INFORMACIÓN\n\n"
-    
 
     if resultado_busqueda and "resultados_ine2_guerrero" in resultado_busqueda:
         cadena = cadena + "*INE BD2 GUERRERO*\n"
@@ -393,6 +389,44 @@ def respuesta(resultado_busqueda):
                     f'*COLONIA:* {obj["COLONIA"]}\n'
                     f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
                 cadena += f'NO ES POSIBLE MOSTRAR LOS {cantidad} REGISTROS DEL INE'
+        else:
+            cadena += "SIN INFORMACIÓN\n\n"
+    
+    if resultado_busqueda and "resultados_ine1_cdmx1" or "resultados_ine1_cdmx2" in resultado_busqueda:
+        cadena = cadena + "*INE BD1 CDMX*\n"
+        resultadosINECdmx1 = resultado_busqueda['resultados_ine1_cdmx1']
+        resultadosINECdmx2 = resultado_busqueda['resultados_ine1_cdmx2']
+        resultados = [resultadosINECdmx1, resultadosINECdmx2]
+        #cantidad = len(resultadosINECdmx1)
+        if resultados:
+            for res in resultados:
+                if res:
+                    cantidad = len(res)
+                    if cantidad < 5:
+                        for obj in res:
+                            cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
+                                f'*ELECTOR:* {obj["ELECTOR"]}\n'
+                                '*CURP:* \n'
+                                f'*CALLE:* {obj["CALLE"]}\n'
+                                f'*NO. INT.:* {obj["NUM_INT"] if obj["NUM_INT"] else ""}\n'
+                                f'*NO. EXT.:* {obj["NUM_EXT"] if obj["NUM_EXT"] else ""}\n'
+                                f'*COLONIA:* {obj["COLONIA"]}\n'
+                                f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
+                    else:
+                        for i, obj in enumerate(res):
+                            if i >= 6:
+                                break
+                            cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
+                            f'*ELECTOR:* {obj["ELECTOR"]}\n'
+                            '*CURP:* \n'
+                            f'*CALLE:* {obj["CALLE"]}\n'
+                            f'*NO. INT.:* {obj["NUM_INT"] if obj["NUM_INT"] else ""}\n'
+                            f'*NO. EXT.:* {obj["NUM_EXT"] if obj["NUM_EXT"] else ""}\n'
+                            f'*COLONIA:* {obj["COLONIA"]}\n'
+                            f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
+                        cadena += f'NO ES POSIBLE MOSTRAR LOS {cantidad} REGISTROS DEL INE'
+                else:
+                    ...        
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
