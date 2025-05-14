@@ -393,7 +393,7 @@ def respuesta(resultado_busqueda):
         else:
             cadena += "SIN INFORMACIÓN\n\n"
     
-    if resultado_busqueda and ("resultados_ine1_cdmx1" or "resultados_ine1_cdmx2") in resultado_busqueda:
+    if (resultado_busqueda and "resultados_ine1_cdmx1" or "resultados_ine1_cdmx2") in resultado_busqueda:
         print(resultado_busqueda, flush=True)
         cadena += "*INE BD1 CDMX*\n"
         resultadosINECdmx1 = resultado_busqueda['resultados_ine1_cdmx1']
