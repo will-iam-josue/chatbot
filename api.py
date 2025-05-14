@@ -399,7 +399,7 @@ def respuesta(resultado_busqueda):
         cantidad = len(resultadosINE)
         if resultadosINE:
             if cantidad < 5:
-                for obj in res:
+                for obj in resultadosINE:
                     cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
                         f'*ELECTOR:* {obj["ELECTOR"]}\n'
                         '*CURP:* \n'
