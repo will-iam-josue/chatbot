@@ -117,7 +117,6 @@ def preproccess_image(path):
     gray = cv2.bilateralFilter(gray, 11, 17, 17)
     #edge = cv2.Canny(gray, 30, 200)
     _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
-    print(thresh, flush=True)
     return thresh
 
 def extraer_texto(ruta_imagen):
@@ -423,9 +422,6 @@ def recibir_mensaje(req):
         return json.dumps({'message': 'EVENT_RECEIVED'})
 
 def enviar_mensaje(texto, numero, urls):
-    print(texto, flush=True)
-    print(numero, flush=True)
-    print(urls, flush=True)
     texto = texto.lower()
     # Datos comunes para todas las solicitudes
     datos = {
