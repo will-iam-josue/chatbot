@@ -412,7 +412,7 @@ def respuesta(resultado_busqueda):
                             f'*COLONIA:* {obj["COLONIA"]}\n'
                             f'*CÓDIGO POSTAL:* {obj["CODPOS"]}\n\n')
                 else:
-                    for i, obj in enumerate(resultadosINE):
+                    for i, obj in enumerate(res):
                         if i >= 6:
                             break
                         cadena += (f'*NOMBRE:* {obj["NOMBRE"]} {obj["APE_PAT"]} {obj["APE_MAT"]}\n'
