@@ -122,9 +122,7 @@ def preproccess_image(path):
 def extraer_texto(ruta_imagen):
     try:
         imagen = preproccess_image(ruta_imagen)
-        print(imagen, flush=True)
         texto = pytesseract.image_to_string(imagen, config=custom_config, lang='eng')  # 'eng' para placas
-        print(texto, flush=True)
         return texto.strip()
     except Exception as e:
         print(f"❌ Error en OCR: {e}", flush=True)
@@ -363,7 +361,6 @@ def recibir_mensaje(req):
             if 'type' in message:
                 
                 tipo = message['type']
-                print(tipo, flush=True)
                 if tipo == 'interactive':
                     numero = message['from']
                     numero = f'{numero[0:2]}{numero[3:]}'
@@ -381,7 +378,6 @@ def recibir_mensaje(req):
                     caption = message['image'].get('caption', '')
                     
                     # Aquí puedes guardar el ID o proceder a descargar la imagen
-                    print(f"Recibí una imagen del número {numero}, ID: {image_id}, Caption: {caption}", flush=True)
                     user_states.pop(numero, None)
                     try:
                         file_saved = descargar_imagen(image_id)
